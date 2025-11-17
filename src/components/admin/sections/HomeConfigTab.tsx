@@ -60,8 +60,9 @@ const HomeConfigTab = () => {
       if (error) throw error;
 
       toast.success("Home configuration saved!");
-    } catch (error: any) {
-      toast.error("Error saving configuration: " + error.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      toast.error("Error saving configuration: " + errorMessage);
     } finally {
       setLoading(false);
     }

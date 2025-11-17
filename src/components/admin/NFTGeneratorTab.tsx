@@ -78,10 +78,11 @@ const NFTGeneratorTab = () => {
 
       resetForm();
       loadProducts();
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save product';
       toast({
         title: 'Error',
-        description: error.message || 'Failed to save product',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
@@ -111,7 +112,7 @@ const NFTGeneratorTab = () => {
     setSelectedProduct(null);
   };
 
-  const handleInputChange = (field: keyof CreateNFTProductInput, value: any) => {
+  const handleInputChange = (field: keyof CreateNFTProductInput, value: CreateNFTProductInput[keyof CreateNFTProductInput]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
 
     if (field === 'name') {

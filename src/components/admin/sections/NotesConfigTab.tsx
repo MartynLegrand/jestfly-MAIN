@@ -52,8 +52,9 @@ const NotesConfigTab = () => {
 
       if (error) throw error;
       toast.success("Notes configuration saved!");
-    } catch (error: any) {
-      toast.error("Error: " + error.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      toast.error("Error: " + errorMessage);
     } finally {
       setLoading(false);
     }
