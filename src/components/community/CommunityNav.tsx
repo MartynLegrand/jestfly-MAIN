@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Calendar, Gift, Instagram, Video } from 'lucide-react';
+import { Users, Calendar, Gift, Instagram, Video, MessageSquare } from 'lucide-react';
 
 const navItems = [
   { path: '/community', label: 'Home', icon: <Users size={18} /> },
+  { path: '/community/feed', label: 'Feed', icon: <MessageSquare size={18} /> },
   { path: '/community/events', label: 'Events', icon: <Calendar size={18} /> },
   { path: '/community/giveaways', label: 'Giveaways', icon: <Gift size={18} /> },
   { path: '/community/hub', label: 'JestFlyers Hub', icon: <Instagram size={18} /> },
