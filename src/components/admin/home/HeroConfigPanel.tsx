@@ -38,7 +38,7 @@ const HeroConfigPanel = () => {
             <Label>Media Type</Label>
             <Select
               value={heroConfig.media_type}
-              onValueChange={(value) => updateHeroConfig({ media_type: value as any })}
+              onValueChange={(value) => updateHeroConfig({ media_type: value as 'video' | '3d' | 'image' })}
             >
               <SelectTrigger className="bg-black/20 border-white/10">
                 <SelectValue />
@@ -142,7 +142,7 @@ const HeroConfigPanel = () => {
             <Label>Content Position</Label>
             <Select
               value={heroConfig.content_position}
-              onValueChange={(value) => updateHeroConfig({ content_position: value as any })}
+              onValueChange={(value) => updateHeroConfig({ content_position: value as 'left' | 'center' | 'right' })}
             >
               <SelectTrigger className="bg-black/20 border-white/10">
                 <SelectValue />

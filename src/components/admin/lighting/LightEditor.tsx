@@ -21,7 +21,7 @@ const LightEditor = () => {
     }
   };
 
-  const handleLightChange = (id: string, key: string, value: any) => {
+  const handleLightChange = (id: string, key: string, value: string | number) => {
     setLights(lights.map(light => 
       light.id === id ? { ...light, [key]: value } : light
     ));

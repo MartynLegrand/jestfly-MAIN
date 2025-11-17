@@ -70,9 +70,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
       
       toast.success('Conta criada com sucesso! Verifique seu e-mail.');
       if (onSuccess) onSuccess();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Erro no registro:', err);
-      setError(err.message || 'Erro ao criar conta');
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao criar conta';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
