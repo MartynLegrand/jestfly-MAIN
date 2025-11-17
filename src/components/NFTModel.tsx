@@ -1,6 +1,5 @@
-
 import React, { useEffect, useRef } from 'react';
-import * as BABYLON from '@babylonjs/core';
+import * as THREE from 'three';
 
 interface NFTModelProps {
   modelType: string;
@@ -8,153 +7,144 @@ interface NFTModelProps {
 
 const NFTModel: React.FC<NFTModelProps> = ({ modelType }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   useEffect(() => {
     if (!canvasRef.current) return;
-    
-    // Setup engine and scene
-    const engine = new BABYLON.Engine(canvasRef.current, true, { 
-      preserveDrawingBuffer: true, 
-      stencil: true,
-      alpha: true,
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      canvasRef.current.clientWidth / canvasRef.current.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef.current,
+      antialias: true,
+      alpha: true
     });
-    
-    const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
-    
-    // Camera
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2, 5, BABYLON.Vector3.Zero(), scene);
-    camera.attachControl(canvasRef.current, true);
-    camera.lowerRadiusLimit = 3;
-    camera.upperRadiusLimit = 8;
-    camera.wheelDeltaPercentage = 0.01;
-    
-    // Lighting
-    const ambientLight = new BABYLON.HemisphericLight("ambientLight", new BABYLON.Vector3(0, 1, 0), scene);
-    ambientLight.intensity = 0.5;
-    
-    const pointLight1 = new BABYLON.PointLight("pointLight1", new BABYLON.Vector3(2, 1, -1), scene);
-    pointLight1.diffuse = BABYLON.Color3.FromHexString("#4ade80"); // Neon green
-    pointLight1.intensity = 0.8;
-    
-    const pointLight2 = new BABYLON.PointLight("pointLight2", new BABYLON.Vector3(-2, -1, 1), scene);
-    pointLight2.diffuse = BABYLON.Color3.FromHexString("#8B5CF6"); // Purple
-    pointLight2.intensity = 0.8;
-    
-    // Environment for reflections
-    try {
-      const envTexture = new BABYLON.CubeTexture("/environment.hdr", scene);
-      scene.environmentTexture = envTexture;
-    } catch (error) {
-      console.warn('Environment map failed to load, using fallback lighting');
-    }
-    
-    // Create geometries based on the model type
-    let mesh;
-    
+    renderer.setSize(canvasRef.current.clientWidth, canvasRef.current.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const greenLight = new THREE.PointLight(0x4ade80, 0.8, 10);
+    greenLight.position.set(2, 1, -1);
+    scene.add(greenLight);
+
+    const purpleLight = new THREE.PointLight(0x8B5CF6, 0.8, 10);
+    purpleLight.position.set(-2, -1, 1);
+    scene.add(purpleLight);
+
+    let geometry;
+
     switch(modelType) {
-      case '001': // Crystal Beast
-        mesh = BABYLON.MeshBuilder.CreatePolyhedron("nftModel", { type: 1, size: 1.2 }, scene);
+      case '001':
+        geometry = new THREE.IcosahedronGeometry(1.2, 0);
         break;
-      case '002': // Sonic Fragment
-        mesh = BABYLON.MeshBuilder.CreateTorus("nftModel", { diameter: 2, thickness: 0.5, tessellation: 32 }, scene);
+      case '002':
+        geometry = new THREE.TorusGeometry(1, 0.5, 16, 32);
         break;
-      case '003': // Digital Relic
-        mesh = BABYLON.MeshBuilder.CreateIcoSphere("nftModel", { radius: 1.3, subdivisions: 3 }, scene);
+      case '003':
+        geometry = new THREE.IcosahedronGeometry(1.3, 1);
         break;
       default:
-        mesh = BABYLON.MeshBuilder.CreateSphere("nftModel", { diameter: 2 }, scene);
+        geometry = new THREE.SphereGeometry(1, 32, 32);
     }
-    
-    // Create different materials based on model type
-    const material = new BABYLON.PBRMaterial("nftMaterial", scene);
-    
+
+    let material: THREE.MeshPhysicalMaterial;
+
     switch(modelType) {
-      case '001': // Crystal Beast - Purple Holographic
-        material.albedoColor = BABYLON.Color3.FromHexString("#9b87f5");
-        material.metallic = 0.6;
-        material.roughness = 0.2;
-        material.alpha = 0.9;
-        material.emissiveColor = BABYLON.Color3.FromHexString("#8B5CF6");
-        material.emissiveIntensity = 0.2;
-        material.subSurface.isRefractionEnabled = true;
-        material.subSurface.refractionIntensity = 0.8;
-        material.iridescence.isEnabled = true;
-        material.iridescence.intensity = 0.8;
+      case '001':
+        material = new THREE.MeshPhysicalMaterial({
+          color: 0x8B5CF6,
+          metalness: 0.6,
+          roughness: 0.2,
+          transparent: true,
+          opacity: 0.9,
+          emissive: 0x8B5CF6,
+          emissiveIntensity: 0.2,
+          transmission: 0.8,
+          thickness: 0.5,
+          iridescence: 0.8,
+          iridescenceIOR: 1.3
+        });
         break;
-      case '002': // Sonic Fragment - Neon Blue Glow
-        material.albedoColor = BABYLON.Color3.FromHexString("#0EA5E9");
-        material.metallic = 0.9;
-        material.roughness = 0.1;
-        material.emissiveColor = BABYLON.Color3.FromHexString("#0EA5E9");
-        material.emissiveIntensity = 0.5;
-        material.clearCoat.isEnabled = true;
-        material.clearCoat.intensity = 1.0;
-        material.clearCoat.roughness = 0.1;
+      case '002':
+        material = new THREE.MeshPhysicalMaterial({
+          color: 0x0EA5E9,
+          metalness: 0.9,
+          roughness: 0.1,
+          emissive: 0x0EA5E9,
+          emissiveIntensity: 0.5,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.1
+        });
         break;
-      case '003': // Digital Relic - Green Matrix
-        material.albedoColor = BABYLON.Color3.FromHexString("#4ade80");
-        material.metallic = 0.7;
-        material.roughness = 0.3;
-        material.emissiveColor = BABYLON.Color3.FromHexString("#4ade80");
-        material.emissiveIntensity = 0.3;
-        material.wireframe = true;
+      case '003':
+        material = new THREE.MeshPhysicalMaterial({
+          color: 0x4ade80,
+          metalness: 0.7,
+          roughness: 0.3,
+          emissive: 0x4ade80,
+          emissiveIntensity: 0.3,
+          wireframe: true
+        });
         break;
       default:
-        material.albedoColor = BABYLON.Color3.White();
-        material.metallic = 0.5;
-        material.roughness = 0.5;
+        material = new THREE.MeshPhysicalMaterial({
+          color: 0xffffff,
+          metalness: 0.5,
+          roughness: 0.5
+        });
     }
-    
-    material.environmentIntensity = 1.0;
-    mesh.material = material;
-    
-    // Add bloom effect
-    const defaultPipeline = new BABYLON.DefaultRenderingPipeline("defaultPipeline", true, scene);
-    defaultPipeline.bloomEnabled = true;
-    defaultPipeline.bloomThreshold = 0.6;
-    defaultPipeline.bloomWeight = 0.7;
-    defaultPipeline.bloomKernel = 64;
-    defaultPipeline.bloomScale = 0.5;
-    
-    // Animation
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const handleResize = () => {
+      if (!canvasRef.current) return;
+      camera.aspect = canvasRef.current.clientWidth / canvasRef.current.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(canvasRef.current.clientWidth, canvasRef.current.clientHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
     let time = 0;
-    scene.onBeforeRenderObservable.add(() => {
+    const animate = () => {
+      const animationId = requestAnimationFrame(animate);
       time += 0.01;
+
       mesh.rotation.y += 0.01;
       mesh.rotation.x = Math.sin(time * 0.5) * 0.1;
-      
-      // Animate lights for dynamic effects
-      pointLight1.position.x = Math.sin(time * 0.7) * 3;
-      pointLight1.position.y = Math.cos(time * 0.5) * 3;
-      
-      pointLight2.position.x = Math.sin(time * 0.3 + 2) * 3;
-      pointLight2.position.y = Math.cos(time * 0.4 + 1) * 3;
-    });
-    
-    // Handle resize
-    const handleResize = () => {
-      engine.resize();
+
+      greenLight.position.x = Math.sin(time * 0.7) * 3;
+      greenLight.position.y = Math.cos(time * 0.5) * 3;
+
+      purpleLight.position.x = Math.sin(time * 0.3 + 2) * 3;
+      purpleLight.position.y = Math.cos(time * 0.4 + 1) * 3;
+
+      renderer.render(scene, camera);
+      return animationId;
     };
-    
-    window.addEventListener('resize', handleResize);
-    
-    // Start rendering
-    engine.runRenderLoop(() => {
-      scene.render();
-    });
-    
-    // Cleanup
+
+    const animationId = animate();
+
     return () => {
       window.removeEventListener('resize', handleResize);
-      scene.dispose();
-      engine.dispose();
+      cancelAnimationFrame(animationId);
+      renderer.dispose();
+      scene.clear();
     };
   }, [modelType]);
-  
+
   return (
-    <canvas 
-      ref={canvasRef} 
+    <canvas
+      ref={canvasRef}
       className="w-full h-full bg-transparent"
     />
   );

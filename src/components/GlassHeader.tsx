@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/use-mobile';
-import Logo from './header/Logo';
+import Logo3D from './header/Logo3D';
 import WelcomeText from './header/WelcomeText';
 import DesktopNav from './header/DesktopNav';
 import MobileMenuToggle from './header/MobileMenuToggle';
@@ -52,17 +52,16 @@ const GlassHeader: React.FC<GlassHeaderProps> = ({ menuItems = [] }) => {
   }, [location.pathname]);
   
   // Classes de efeito de vidro com base no estado de scroll
-  const glassEffect = scrolled 
-    ? "bg-black/70 backdrop-blur-xl border-b border-white/20 shadow-lg transition-all duration-500" 
-    : "bg-black/40 backdrop-blur-md transition-all duration-500";
+  const glassEffect = scrolled
+    ? "bg-gradient-to-b from-black/90 to-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] border-b border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-500"
+    : "bg-gradient-to-b from-black/80 to-black/60 backdrop-blur-[16px] backdrop-saturate-[150%] transition-all duration-500";
   
   return (
     <header className={`fixed top-0 left-0 w-full z-50 ${glassEffect}`}>
-      <div className="max-w-[1800px] mx-auto px-3 sm:px-4 md:px-6 py-2.5 md:py-4">
+      <div className="max-w-[1800px] mx-auto px-3 sm:px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          {/* Logo e texto de boas-vindas */}
           <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-12">
-            <Logo />
+            <Logo3D />
             {!isMobile && <WelcomeText />}
           </div>
           

@@ -29,36 +29,37 @@ const CrystalHero: React.FC<CrystalHeroProps> = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <section className={`hero relative h-screen flex flex-col pt-20 overflow-hidden ${className}`}>
-      {/* Dark gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0d0d15] to-[#1A1F2C] z-0"></div>
-      
-      {/* Dynamic light effects */}
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] rounded-full bg-[#8B5CF6]/10 blur-[100px] animate-float z-10"></div>
-      <div className="absolute bottom-[5%] left-[10%] w-[40vw] h-[40vw] rounded-full bg-[#4ade80]/10 blur-[100px] animate-float z-10" style={{
+  return <section className={`hero relative h-screen flex flex-col pt-20 overflow-hidden ${className} scanlines`}>
+      <div className="absolute inset-0 bg-gradient-radial from-primary-900/20 via-black to-black z-0"></div>
+
+      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] rounded-full bg-primary-500/15 blur-[120px] animate-float animate-pulse-glow z-10"></div>
+      <div className="absolute bottom-[5%] left-[10%] w-[40vw] h-[40vw] rounded-full bg-accent-500/15 blur-[120px] animate-float z-10" style={{
       animationDelay: '-5s'
     }}></div>
+
+      <div className="absolute inset-0 opacity-30 pointer-events-none z-10" style={{
+        backgroundImage: 'radial-gradient(circle at 50% 50%, transparent 0%, rgba(139, 92, 246, 0.1) 100%)'
+      }}></div>
       
       {/* Side captions - hidden on mobile */}
-      <div className="absolute top-1/3 left-4 sm:left-8 z-30 hidden md:block">
-        <div className="p-3 rounded-lg mb-3">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1">bangers only</h2>
+      <div className="absolute top-1/3 left-4 sm:left-8 z-30 hidden md:block animate-slide-up">
+        <div className="p-3 rounded-lg mb-3 card-modern hover-lift">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-gradient">bangers only</h2>
           <div className="space-y-0 uppercase text-xs tracking-wider text-white/70">
             <p>IT'S ALWAYS TIME</p>
             <p>TO ENJOY</p>
           </div>
         </div>
       </div>
-      
-      <div className="absolute top-1/3 right-4 sm:right-8 z-30 text-right hidden md:block">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1">inspired</h2>
-        <div className="space-y-0 uppercase text-xs tracking-wider text-white/70">
-          <p>FROM 10:00</p>
-          <p>TO 19:00</p>
+
+      <div className="absolute top-1/3 right-4 sm:right-8 z-30 text-right hidden md:block animate-slide-up" style={{ animationDelay: '0.2s' }}>
+        <div className="card-modern hover-lift p-3 rounded-lg">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-gradient">inspired</h2>
+          <div className="space-y-0 uppercase text-xs tracking-wider text-white/70">
+            <p>FROM 10:00</p>
+            <p>TO 19:00</p>
+          </div>
         </div>
-        
-        {/* JestCoin ticker positioned near "inspired" */}
-        
       </div>
       
       {/* Crystal with z-index to appear in front of the title */}

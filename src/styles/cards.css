@@ -1,0 +1,191 @@
+@layer components {
+  .card-modern {
+    @apply relative overflow-hidden rounded-3xl p-8;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 20px 40px rgba(139, 92, 246, 0.2),
+      0 10px 20px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+
+  .card-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(139, 92, 246, 0.5),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card-modern:hover::before {
+    opacity: 1;
+  }
+
+  .card-gradient {
+    @apply card-modern;
+    background: linear-gradient(
+      135deg,
+      rgba(139, 92, 246, 0.1) 0%,
+      rgba(6, 182, 212, 0.1) 100%
+    );
+  }
+
+  .card-neon {
+    @apply card-modern;
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow:
+      0 0 20px rgba(139, 92, 246, 0.2),
+      inset 0 0 20px rgba(139, 92, 246, 0.05);
+  }
+
+  .card-neon:hover {
+    box-shadow:
+      0 0 40px rgba(139, 92, 246, 0.4),
+      0 20px 40px rgba(139, 92, 246, 0.2),
+      inset 0 0 30px rgba(139, 92, 246, 0.1);
+  }
+
+  .skeleton-loader {
+    @apply animate-pulse rounded-lg;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .btn-modern {
+    @apply relative overflow-hidden rounded-xl px-6 py-3 font-medium;
+    @apply transition-all duration-300 ease-out;
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-modern:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+  }
+
+  .btn-modern:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .btn-modern:hover::before {
+    left: 100%;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #8B5CF6 50%, #ffffff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 3s linear infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(139, 92, 246, 0.15) 0%,
+      rgba(0, 0, 0, 1) 70%
+    );
+  }
+
+  .scanlines {
+    position: relative;
+  }
+
+  .scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
