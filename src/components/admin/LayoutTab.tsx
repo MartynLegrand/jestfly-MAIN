@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ModelParameters } from "@/types/model";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { Badge } from "@/components/ui/badge";
 
 interface LayoutTabProps {
@@ -21,7 +21,7 @@ const LayoutTab = ({ titleText, subtitleText, modelParams }: LayoutTabProps) => 
   const [layoutMode, setLayoutMode] = useState("preview");
 
   // Função simulada para reordenar elementos
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     // Implementar funcionalidade de arrastar e soltar aqui
     console.log("Reordenação:", result);
   };

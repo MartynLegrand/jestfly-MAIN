@@ -273,7 +273,7 @@ const SketchfabTab = ({ changeActiveModel }: SketchfabTabProps) => {
   };
 
   // Função para lidar com os resultados da busca
-  const handleSearchResults = (results: any[]) => {
+  const handleSearchResults = (results: SketchfabModel[]) => {
     setSearchResults(results);
   };
 

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ModelParameters, defaultModelParams } from '../../../types/model';
+import { ModelParameters, defaultModelParams, SavedModel } from '../../../types/model';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Json } from '@/integrations/supabase/types';
@@ -12,7 +12,7 @@ const ModelEditorContainer = () => {
   const [modelName, setModelName] = useState('Novo Modelo');
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
-  const [savedModels, setSavedModels] = useState<any[]>([]);
+  const [savedModels, setSavedModels] = useState<SavedModel[]>([]);
   const [loading, setLoading] = useState(false);
   
   const rgbaToHex = ({ r, g, b }: { r: number, g: number, b: number }) => {

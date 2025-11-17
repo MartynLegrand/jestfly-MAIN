@@ -3,12 +3,7 @@ import React from 'react';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Label } from '../../ui/label';
-
-interface SavedModel {
-  id: string;
-  name: string;
-  [key: string]: any;
-}
+import { SavedModel } from '../../../types/model';
 
 interface ModelSelectorProps {
   modelName: string;

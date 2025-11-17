@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ModelParameters } from '../../../types/model';
+import { ModelParameters, SavedModel } from '../../../types/model';
 import ParameterControls from './ParameterControls';
 import ModelSelector from './ModelSelector';
 import ColorPicker from './ColorPicker';
@@ -11,7 +11,7 @@ interface ControlsSectionProps {
   onParametersChange: (parameters: ModelParameters) => void;
   modelName: string;
   onModelNameChange: (name: string) => void;
-  savedModels: any[];
+  savedModels: SavedModel[];
   selectedModelId: string | null;
   onLoadModel: (id: string) => void;
   onCreateNewModel: () => void;

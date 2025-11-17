@@ -72,7 +72,7 @@ const CardEditor = ({ card, onClose }: CardEditorProps) => {
           <Label>Card Type</Label>
           <Select
             value={formData.card_type}
-            onValueChange={(value) => setFormData({ ...formData, card_type: value as any })}
+            onValueChange={(value) => setFormData({ ...formData, card_type: value as CardFormData['card_type'] })}
           >
             <SelectTrigger className="bg-black/20 border-white/10">
               <SelectValue />

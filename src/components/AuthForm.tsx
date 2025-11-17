@@ -51,7 +51,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login', onSuccess }) => {
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: z.infer<typeof loginFormSchema> | z.infer<typeof registerFormSchema>) => {
     setLoading(true);
     setError(null);
 
@@ -60,16 +60,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login', onSuccess }) => {
         await login(data.email, data.password);
         toast.success('Login realizado com sucesso!');
       } else {
-        await register(data.email, data.password, {
-          display_name: data.name, // changed from displayName to display_name
-          username: data.username,
-          profile_type: data.profileType || 'fan'
+        const registerData = data as z.infer<typeof registerFormSchema>;
+        await register(registerData.email, registerData.password, {
+          display_name: registerData.name, // changed from displayName to display_name
+          username: registerData.username,
+          profile_type: registerData.profileType || 'fan'
         });
         toast.success('Account created successfully!');
       }
       if (onSuccess) onSuccess();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

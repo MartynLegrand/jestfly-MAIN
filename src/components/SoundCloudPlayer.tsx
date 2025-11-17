@@ -3,6 +3,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Volume2, VolumeX, X, Disc } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
+interface SoundCloudWidget {
+  play: () => void;
+  pause: () => void;
+  setVolume: (volume: number) => void;
+}
+
+interface WindowWithSC extends Window {
+  SC?: {
+    Widget: (iframe: HTMLIFrameElement) => SoundCloudWidget;
+  };
+}
+
 interface SoundCloudPlayerProps {
   isMinimized: boolean;
   setIsMinimized: (value: boolean) => void;
@@ -82,8 +94,9 @@ const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({
     // Interact with SoundCloud iframe API
     try {
       const iframe = audioRef.current;
-      if (iframe) {
-        const widget = (window as any).SC.Widget(iframe);
+      const windowWithSC = window as WindowWithSC;
+      if (iframe && windowWithSC.SC) {
+        const widget = windowWithSC.SC.Widget(iframe);
         if (newPlayState) {
           widget.play();
         } else {
@@ -100,8 +113,9 @@ const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({
     setIsMuted(!isMuted);
     try {
       const iframe = audioRef.current;
-      if (iframe) {
-        const widget = (window as any).SC.Widget(iframe);
+      const windowWithSC = window as WindowWithSC;
+      if (iframe && windowWithSC.SC) {
+        const widget = windowWithSC.SC.Widget(iframe);
         if (!isMuted) {
           widget.setVolume(0);
         } else {
@@ -118,8 +132,9 @@ const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({
     if (!isMuted) {
       try {
         const iframe = audioRef.current;
-        if (iframe) {
-          const widget = (window as any).SC.Widget(iframe);
+        const windowWithSC = window as WindowWithSC;
+        if (iframe && windowWithSC.SC) {
+          const widget = windowWithSC.SC.Widget(iframe);
           widget.setVolume(volume * 100);
         }
       } catch (err) {

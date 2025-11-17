@@ -8,8 +8,22 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 
+interface SketchfabModel {
+  uid: string;
+  name: string;
+  thumbnails: {
+    images: Array<{
+      url: string;
+      width: number;
+      height: number;
+    }>;
+  };
+  viewerUrl: string;
+  embedUrl: string;
+}
+
 interface SearchFormProps {
-  onSearchResults: (results: any[]) => void;
+  onSearchResults: (results: SketchfabModel[]) => void;
   onModelImport: () => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
@@ -103,12 +117,13 @@ const SearchForm = ({ onSearchResults, onModelImport, isLoading, setIsLoading }:
       await saveModel(newModel);
       setDirectUrl("");
       
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao buscar modelo';
       console.error("Erro ao buscar modelo:", error);
       toast({
         variant: "destructive",
         title: "Erro ao buscar modelo",
-        description: error.message
+        description: errorMessage
       });
     } finally {
       setIsLoading(false);
@@ -116,7 +131,7 @@ const SearchForm = ({ onSearchResults, onModelImport, isLoading, setIsLoading }:
   };
 
   // Salvar modelo no banco de dados
-  const saveModel = async (model: any) => {
+  const saveModel = async (model: SketchfabModel) => {
     try {
       const { data, error } = await supabase
         .from('models')

@@ -71,15 +71,16 @@ const LoginForm: React.FC = () => {
       await login(formData.email, formData.password);
       toast.success('Login realizado com sucesso!');
       navigate('/profile');
-    } catch (error: any) {
-      if (error.message.includes('Invalid login credentials')) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Falha ao realizar login';
+      if (errorMessage.includes('Invalid login credentials')) {
         toast.error('Email ou senha inválidos. Tente novamente.');
-      } else if (error.message.includes('Invalid email')) {
+      } else if (errorMessage.includes('Invalid email')) {
         toast.error('Formato de email inválido. Verifique o e-mail e tente novamente.');
-      } else if (error.message.includes('Too many requests')) {
+      } else if (errorMessage.includes('Too many requests')) {
         toast.error('Muitas tentativas de login. Tente novamente mais tarde ou recupere sua senha.');
       } else {
-        toast.error(error.message || 'Falha ao realizar login');
+        toast.error(errorMessage);
       }
       console.error('Erro de login:', error);
     } finally {
