@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
+import ReportContent from './ReportContent';
 
 interface PostCardProps {
   post: CommunityPost;
@@ -155,6 +156,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike, onComment, onShare })
             <Share2 className="h-5 w-5" />
             <span className="text-sm">{post.shares_count}</span>
           </button>
+
+          <ReportContent postId={post.id} contentType="post" />
         </div>
 
         {post.views_count > 0 && (
