@@ -5,8 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import ProductManager from "@/components/admin/store/ProductManager";
+import OrderManager from "@/components/admin/store/OrderManager";
 
 const StoreConfigTab = () => {
   const [config, setConfig] = useState({
@@ -66,10 +69,27 @@ const StoreConfigTab = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Store Configuration</h2>
-        <p className="text-white/60">Manage store settings and appearance</p>
+        <h2 className="text-2xl font-bold text-white mb-2">Store Management</h2>
+        <p className="text-white/60">Manage products, orders, and store settings</p>
       </div>
 
+      <Tabs defaultValue="products" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="orders">Orders</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="products" className="mt-6">
+          <ProductManager />
+        </TabsContent>
+
+        <TabsContent value="orders" className="mt-6">
+          <OrderManager />
+        </TabsContent>
+
+        <TabsContent value="settings" className="mt-6">
+          <div className="space-y-6">
       <Card className="glass-morphism">
         <CardHeader>
           <CardTitle>General Settings</CardTitle>
@@ -150,6 +170,9 @@ const StoreConfigTab = () => {
           {loading ? "Saving..." : "Save Changes"}
         </Button>
       </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
