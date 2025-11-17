@@ -75,7 +75,12 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-black">
-            <GlassHeader menuItems={menuItems} />
+            <GlassHeader
+              menuItems={menuItems}
+              logoType="video"
+              videoSrc="/assets/videos/oculos2.mp4"
+              modelSrc="/models/logo-3d.glb"
+            />
             <Toaster position="top-right" />
             <main className="flex-grow">
               <Routes>

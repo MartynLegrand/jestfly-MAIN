@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/use-mobile';
-import Logo3D from './header/Logo3D';
+import LogoMedia from './header/LogoMedia';
 import WelcomeText from './header/WelcomeText';
 import DesktopNav from './header/DesktopNav';
 import MobileMenuToggle from './header/MobileMenuToggle';
@@ -16,9 +16,17 @@ interface MenuItem {
 
 interface GlassHeaderProps {
   menuItems?: MenuItem[];
+  logoType?: 'video' | '3d' | 'icon';
+  videoSrc?: string;
+  modelSrc?: string;
 }
 
-const GlassHeader: React.FC<GlassHeaderProps> = ({ menuItems = [] }) => {
+const GlassHeader: React.FC<GlassHeaderProps> = ({
+  menuItems = [],
+  logoType = 'video',
+  videoSrc = '/assets/videos/oculos2.mp4',
+  modelSrc = '/models/logo-3d.glb'
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isMobile = useIsMobile();
@@ -61,7 +69,11 @@ const GlassHeader: React.FC<GlassHeaderProps> = ({ menuItems = [] }) => {
       <div className="max-w-[1800px] mx-auto px-3 sm:px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-12">
-            <Logo3D />
+            <LogoMedia
+              type={logoType}
+              videoSrc={videoSrc}
+              modelSrc={modelSrc}
+            />
             {!isMobile && <WelcomeText />}
           </div>
           
