@@ -1,30 +1,40 @@
 import './App.css';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlassHeader from './components/GlassHeader';
 import AdminQuickAccess from './components/AdminQuickAccess';
 import { defaultModelParams } from './types/model';
 import { Toaster } from 'sonner';
-import NotesPage from './pages/NotesPage';
-import HomePage from './pages/HomePage';
-import NewStorePage from './pages/NewStorePage';
-import NFTStorePage from './pages/NFTStorePage';
-import CommunityPage from './pages/CommunityPage';
-import BookingsPage from './pages/BookingsPage';
-import ProfilePage from './pages/ProfilePage';
-import DemoSubmissionPage from './pages/DemoSubmissionPage';
-import LiveStreamPage from './pages/LiveStreamPage';
-import PressKitPage from './pages/PressKitPage';
-import AirdropPage from './pages/AirdropPage';
-import EcommercePage from './pages/EcommercePage';
-import AdminDashboard from './pages/AdminDashboard';
-import UnauthorizedPage from './pages/UnauthorizedPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import { AuthProvider } from './contexts/auth';
 import { LoginForm } from './components/auth';
 import { RegisterForm } from './components/auth';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Footer from './components/Footer';
 import LanguageProvider from './contexts/LanguageContext';
+
+// Lazy load pages for better code splitting and performance
+const HomePage = lazy(() => import('./pages/HomePage'));
+const NotesPage = lazy(() => import('./pages/NotesPage'));
+const NewStorePage = lazy(() => import('./pages/NewStorePage'));
+const NFTStorePage = lazy(() => import('./pages/NFTStorePage'));
+const CommunityPage = lazy(() => import('./pages/CommunityPage'));
+const BookingsPage = lazy(() => import('./pages/BookingsPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const DemoSubmissionPage = lazy(() => import('./pages/DemoSubmissionPage'));
+const LiveStreamPage = lazy(() => import('./pages/LiveStreamPage'));
+const PressKitPage = lazy(() => import('./pages/PressKitPage'));
+const AirdropPage = lazy(() => import('./pages/AirdropPage'));
+const EcommercePage = lazy(() => import('./pages/EcommercePage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const UnauthorizedPage = lazy(() => import('./pages/UnauthorizedPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+  </div>
+);
 
 function App() {
   const crystalParams = {
@@ -83,19 +93,20 @@ function App() {
             <Toaster position="top-right" />
             <AdminQuickAccess />
             <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />
-                <Route path="/store/*" element={<NewStorePage />} />
-                <Route path="/nft-store" element={<NFTStorePage />} />
-                <Route path="/community/*" element={<CommunityPage />} />
-                <Route path="/bookings" element={<BookingsPage />} />
-                <Route path="/resources" element={<EcommercePage />} />
-                <Route path="/notes" element={<NotesPage />} />
-                <Route path="/profile" element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                } />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />
+                  <Route path="/store/*" element={<NewStorePage />} />
+                  <Route path="/nft-store" element={<NFTStorePage />} />
+                  <Route path="/community/*" element={<CommunityPage />} />
+                  <Route path="/bookings" element={<BookingsPage />} />
+                  <Route path="/resources" element={<EcommercePage />} />
+                  <Route path="/notes" element={<NotesPage />} />
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  } />
                 <Route path="/profile/:userId" element={
                   <ProfilePage />
                 } />
@@ -132,7 +143,8 @@ function App() {
                     <ForgotPasswordPage />
                   </ProtectedRoute>
                 } />
-              </Routes>
+                </Routes>
+              </Suspense>
             </main>
             <Footer />
           </div>
