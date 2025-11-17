@@ -120,7 +120,7 @@ const ModelTab = ({
       });
       
       // Se for um modelo do Sketchfab, também salvar a URL no localStorage
-      const model = savedModels.find(m => m.id === id);
+      const model = savedModels.find(savedModel => savedModel.id === id);
       if (model && model.model_type === 'sketchfab' && model.url) {
         localStorage.setItem("sketchfabUrl", model.url);
       }
@@ -236,23 +236,23 @@ const ModelTab = ({
       // Criar geometria do diamante
       const vertices = [
         0, 2, 0,
-        ...Array.from({ length: 18 }, (_, i) => {
-          const angle = (i / 18) * Math.PI * 2;
-          const x = Math.cos(angle) * 1.0;
-          const z = Math.sin(angle) * 1.0;
-          return [x, 0, z];
+        ...Array.from({ length: 18 }, (_, index) => {
+          const angle = (index / 18) * Math.PI * 2;
+          const xPosition = Math.cos(angle) * 1.0;
+          const zPosition = Math.sin(angle) * 1.0;
+          return [xPosition, 0, zPosition];
         }).flat(),
         0, -2, 0,
       ];
       
       const indices = [];
       // Top faces
-      for (let i = 1; i < 19; i++) {
-        indices.push(0, i, i === 18 ? 1 : i + 1);
+      for (let vertexIndex = 1; vertexIndex < 19; vertexIndex++) {
+        indices.push(0, vertexIndex, vertexIndex === 18 ? 1 : vertexIndex + 1);
       }
       // Middle faces
-      for (let i = 1; i < 19; i++) {
-        indices.push(i, 19, i === 18 ? 1 : i + 1);
+      for (let vertexIndex = 1; vertexIndex < 19; vertexIndex++) {
+        indices.push(vertexIndex, 19, vertexIndex === 18 ? 1 : vertexIndex + 1);
       }
       
       const geometry = new THREE.PolyhedronGeometry(vertices, indices, 2, 2);

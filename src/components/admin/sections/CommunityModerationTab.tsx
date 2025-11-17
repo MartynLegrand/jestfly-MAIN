@@ -80,7 +80,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setPosts(prev => prev.filter(p => p.id !== postId));
+      setPosts(prev => prev.filter(post => post.id !== postId));
       toast.success(`Post ${status}`);
     } catch (error) {
       console.error('Error moderating post:', error);
@@ -100,7 +100,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setPosts(prev => prev.filter(p => p.id !== postId));
+      setPosts(prev => prev.filter(post => post.id !== postId));
       toast.success('Post deleted');
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -120,7 +120,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setPosts(prev => prev.map(p => p.id === postId ? { ...p, is_pinned: !isPinned } : p));
+      setPosts(prev => prev.map(post => post.id === postId ? { ...post, is_pinned: !isPinned } : post));
       toast.success(isPinned ? 'Post unpinned' : 'Post pinned');
     } catch (error) {
       console.error('Error pinning post:', error);
@@ -140,7 +140,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
       toast.success(`Comment ${status}`);
     } catch (error) {
       console.error('Error moderating comment:', error);
@@ -160,7 +160,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
       toast.success('Comment deleted');
     } catch (error) {
       console.error('Error deleting comment:', error);
@@ -187,7 +187,7 @@ export default function CommunityModerationTab() {
 
       if (error) throw error;
 
-      setReports(prev => prev.filter(r => r.id !== reportId));
+      setReports(prev => prev.filter(report => report.id !== reportId));
       toast.success(`Report ${status}`);
     } catch (error) {
       console.error('Error reviewing report:', error);

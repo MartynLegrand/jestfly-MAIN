@@ -127,15 +127,15 @@ export function useCommunityComments(postId: string) {
       if (error) throw error;
 
       if (commentData.parent_comment_id) {
-        setComments(prev => prev.map(c => {
-          if (c.id === commentData.parent_comment_id) {
+        setComments(prev => prev.map(comment => {
+          if (comment.id === commentData.parent_comment_id) {
             return {
-              ...c,
-              replies_count: c.replies_count + 1,
-              replies: [...(c.replies || []), data],
+              ...comment,
+              replies_count: comment.replies_count + 1,
+              replies: [...(comment.replies || []), data],
             };
           }
-          return c;
+          return comment;
         }));
       } else {
         setComments(prev => [data, ...prev]);
@@ -159,8 +159,8 @@ export function useCommunityComments(postId: string) {
 
       if (error) throw error;
 
-      setComments(prev => prev.map(c =>
-        c.id === commentId ? { ...c, content, is_edited: true } : c
+      setComments(prev => prev.map(comment =>
+        comment.id === commentId ? { ...comment, content, is_edited: true } : comment
       ));
       toast.success('Comment updated!');
     } catch (error) {
@@ -179,7 +179,7 @@ export function useCommunityComments(postId: string) {
 
       if (error) throw error;
 
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
       toast.success('Comment deleted!');
     } catch (error) {
       console.error('Error deleting comment:', error);
@@ -194,8 +194,8 @@ export function useCommunityComments(postId: string) {
       if (!user) throw new Error('Not authenticated');
 
       const targetComment = isReply && parentId
-        ? comments.find(c => c.id === parentId)?.replies?.find(r => r.id === commentId)
-        : comments.find(c => c.id === commentId);
+        ? comments.find(comment => comment.id === parentId)?.replies?.find(reply => reply.id === commentId)
+        : comments.find(comment => comment.id === commentId);
 
       if (!targetComment) return;
 
@@ -209,24 +209,24 @@ export function useCommunityComments(postId: string) {
         if (error) throw error;
 
         if (isReply && parentId) {
-          setComments(prev => prev.map(c => {
-            if (c.id === parentId && c.replies) {
+          setComments(prev => prev.map(comment => {
+            if (comment.id === parentId && comment.replies) {
               return {
-                ...c,
-                replies: c.replies.map(r =>
-                  r.id === commentId
-                    ? { ...r, is_liked: false, likes_count: r.likes_count - 1 }
-                    : r
+                ...comment,
+                replies: comment.replies.map(reply =>
+                  reply.id === commentId
+                    ? { ...reply, is_liked: false, likes_count: reply.likes_count - 1 }
+                    : reply
                 ),
               };
             }
-            return c;
+            return comment;
           }));
         } else {
-          setComments(prev => prev.map(c =>
-            c.id === commentId
-              ? { ...c, is_liked: false, likes_count: c.likes_count - 1 }
-              : c
+          setComments(prev => prev.map(comment =>
+            comment.id === commentId
+              ? { ...comment, is_liked: false, likes_count: comment.likes_count - 1 }
+              : comment
           ));
         }
       } else {
@@ -237,24 +237,24 @@ export function useCommunityComments(postId: string) {
         if (error) throw error;
 
         if (isReply && parentId) {
-          setComments(prev => prev.map(c => {
-            if (c.id === parentId && c.replies) {
+          setComments(prev => prev.map(comment => {
+            if (comment.id === parentId && comment.replies) {
               return {
-                ...c,
-                replies: c.replies.map(r =>
-                  r.id === commentId
-                    ? { ...r, is_liked: true, likes_count: r.likes_count + 1 }
-                    : r
+                ...comment,
+                replies: comment.replies.map(reply =>
+                  reply.id === commentId
+                    ? { ...reply, is_liked: true, likes_count: reply.likes_count + 1 }
+                    : reply
                 ),
               };
             }
-            return c;
+            return comment;
           }));
         } else {
-          setComments(prev => prev.map(c =>
-            c.id === commentId
-              ? { ...c, is_liked: true, likes_count: c.likes_count + 1 }
-              : c
+          setComments(prev => prev.map(comment =>
+            comment.id === commentId
+              ? { ...comment, is_liked: true, likes_count: comment.likes_count + 1 }
+              : comment
           ));
         }
       }

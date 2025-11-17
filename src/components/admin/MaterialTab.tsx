@@ -88,7 +88,7 @@ const MaterialTab = ({
   
   // Aplicar um preset de material
   const applyPreset = (presetId: string) => {
-    const preset = materialPresets.find(p => p.id === presetId);
+    const preset = materialPresets.find(materialPreset => materialPreset.id === presetId);
     if (!preset) return;
     
     setActivePreset(presetId);

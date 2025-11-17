@@ -49,8 +49,8 @@ const NFTStorePage = () => {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await nftProductsService.getProducts(filters);
-      setProducts(data);
+      const nftProducts = await nftProductsService.getProducts(filters);
+      setProducts(nftProducts);
     } catch (error) {
       console.error('Error loading products:', error);
       toast({

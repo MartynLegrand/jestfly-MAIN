@@ -98,8 +98,8 @@ export default function CreatePostModalNew({ open, onClose, onPostCreated }: Cre
 
       let mediaType: MediaType | undefined;
       if (mediaUrls.length > 0) {
-        const hasImages = mediaFiles.some(f => f.type.startsWith('image/'));
-        const hasVideos = mediaFiles.some(f => f.type.startsWith('video/'));
+        const hasImages = mediaFiles.some(file => file.type.startsWith('image/'));
+        const hasVideos = mediaFiles.some(file => file.type.startsWith('video/'));
         mediaType = hasImages && hasVideos ? 'mixed' : hasImages ? 'image' : 'video';
       }
 

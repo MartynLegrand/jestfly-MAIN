@@ -45,8 +45,8 @@ const NFTGeneratorTab = () => {
 
   const loadProducts = async () => {
     try {
-      const data = await nftProductsService.getProducts();
-      setProducts(data);
+      const nftProducts = await nftProductsService.getProducts();
+      setProducts(nftProducts);
     } catch (error) {
       console.error('Error loading products:', error);
     }

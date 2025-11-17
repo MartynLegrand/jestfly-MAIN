@@ -41,7 +41,7 @@ export function useCommunityNotifications() {
       if (error) throw error;
 
       setNotifications(data || []);
-      setUnreadCount((data || []).filter(n => !n.is_read).length);
+      setUnreadCount((data || []).filter(notif => !notif.is_read).length);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {
@@ -58,8 +58,8 @@ export function useCommunityNotifications() {
 
       if (error) throw error;
 
-      setNotifications(prev => prev.map(n =>
-        n.id === notificationId ? { ...n, is_read: true } : n
+      setNotifications(prev => prev.map(notif =>
+        notif.id === notificationId ? { ...notif, is_read: true } : notif
       ));
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
@@ -80,7 +80,7 @@ export function useCommunityNotifications() {
 
       if (error) throw error;
 
-      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+      setNotifications(prev => prev.map(notif => ({ ...notif, is_read: true })));
       setUnreadCount(0);
       toast.success('All notifications marked as read');
     } catch (error) {
@@ -98,12 +98,12 @@ export function useCommunityNotifications() {
 
       if (error) throw error;
 
-      const notification = notifications.find(n => n.id === notificationId);
+      const notification = notifications.find(notif => notif.id === notificationId);
       if (notification && !notification.is_read) {
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
 
-      setNotifications(prev => prev.filter(n => n.id !== notificationId));
+      setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
     } catch (error) {
       console.error('Error deleting notification:', error);
       toast.error('Failed to delete notification');

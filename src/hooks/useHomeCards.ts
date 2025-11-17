@@ -34,7 +34,7 @@ export const useHomeCards = () => {
 
   const createCard = async (cardData: CardFormData) => {
     try {
-      const maxOrder = Math.max(...cards.map(c => c.order_index), 0);
+      const maxOrder = Math.max(...cards.map(card => card.order_index), 0);
 
       const { error } = await supabase
         .from('homepage_cards')
