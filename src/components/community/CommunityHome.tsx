@@ -31,7 +31,22 @@ const CommunityHome: React.FC = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <Link to="/community/feed" className="block group">
+          <div className="aspect-video bg-gradient-to-br from-green-900 to-emerald-900 rounded-lg flex items-center justify-center relative overflow-hidden border border-white/10 group-hover:border-green-500 transition-all">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <h2 className="text-4xl font-bold text-white z-10">Feed</h2>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Users className="text-white/20 w-32 h-32" />
+            </div>
+            <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="bg-white/20 px-4 py-2 rounded-full text-white backdrop-blur-md">
+                Explore →
+              </span>
+            </div>
+          </div>
+        </Link>
         <Link to="/community/events" className="block group">
           <div className="aspect-video bg-gradient-to-br from-purple-900 to-blue-900 rounded-lg flex items-center justify-center relative overflow-hidden border border-white/10 group-hover:border-purple-500 transition-all">
             <h2 className="text-4xl font-bold text-white">Events</h2>
