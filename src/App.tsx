@@ -74,6 +74,9 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-black">
+            <a href="#main-content" className="skip-to-main">
+              Skip to main content
+            </a>
             <GlassHeader
               menuItems={menuItems}
               logoType="video"
@@ -82,7 +85,7 @@ function App() {
             />
             <Toaster position="top-right" />
             <AdminQuickAccess />
-            <main className="flex-grow">
+            <main id="main-content" className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />
                 <Route path="/store/*" element={<NewStorePage />} />
