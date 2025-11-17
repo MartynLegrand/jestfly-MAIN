@@ -10,9 +10,21 @@ import { supabase } from "@/integrations/supabase/client";
 
 const PressKitConfigTab = () => {
   const [config, setConfig] = useState({
-    title: "PressKit",
+    title: "Press Kit",
+    subtitle: "Media resources and brand assets for JESTFLY",
     description: "Press kit configuration",
     enabled: true,
+    artistBio: "JESTFLY - Electronic music artist and producer",
+    pressContact: "press@jestfly.com",
+    bookingContact: "booking@jestfly.com",
+    showPhotos: true,
+    showLogos: true,
+    showVideos: true,
+    showPressReleases: true,
+    showSocialLinks: true,
+    allowDownloads: true,
+    requireAttribution: true,
+    attributionText: "Photo credit: JESTFLY",
   });
 
   const [loading, setLoading] = useState(false);
@@ -30,7 +42,7 @@ const PressKitConfigTab = () => {
         .single();
 
       if (data) {
-        setConfig(JSON.parse(data.config));
+        setConfig({ ...config, ...JSON.parse(data.config) });
       }
     } catch (error) {
       console.log("Using default config");
@@ -62,13 +74,13 @@ const PressKitConfigTab = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">PressKit Configuration</h2>
-        <p className="text-white/60">Press kit configuration</p>
+        <h2 className="text-2xl font-bold text-white mb-2">Press Kit Configuration</h2>
+        <p className="text-white/60">Configure press materials and media assets</p>
       </div>
 
       <Card className="glass-morphism">
         <CardHeader>
-          <CardTitle>General Settings</CardTitle>
+          <CardTitle>Page Content</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -81,22 +93,164 @@ const PressKitConfigTab = () => {
           </div>
 
           <div>
-            <Label>Description</Label>
-            <Textarea
-              value={config.description}
-              onChange={(e) => setConfig({ ...config, description: e.target.value })}
+            <Label>Subtitle</Label>
+            <Input
+              value={config.subtitle}
+              onChange={(e) => setConfig({ ...config, subtitle: e.target.value })}
               className="bg-black/20 border-white/10"
-              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label>Artist Bio</Label>
+            <Textarea
+              value={config.artistBio}
+              onChange={(e) => setConfig({ ...config, artistBio: e.target.value })}
+              className="bg-black/20 border-white/10"
+              rows={4}
+              placeholder="Enter artist biography for press use"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <Label>Enable PressKit Section</Label>
+            <Label>Enable Press Kit Page</Label>
             <Switch
               checked={config.enabled}
               onCheckedChange={(checked) => setConfig({ ...config, enabled: checked })}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-morphism">
+        <CardHeader>
+          <CardTitle>Contact Information</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label>Press Contact Email</Label>
+            <Input
+              type="email"
+              value={config.pressContact}
+              onChange={(e) => setConfig({ ...config, pressContact: e.target.value })}
+              className="bg-black/20 border-white/10"
+              placeholder="press@jestfly.com"
+            />
+          </div>
+
+          <div>
+            <Label>Booking Contact Email</Label>
+            <Input
+              type="email"
+              value={config.bookingContact}
+              onChange={(e) => setConfig({ ...config, bookingContact: e.target.value })}
+              className="bg-black/20 border-white/10"
+              placeholder="booking@jestfly.com"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-morphism">
+        <CardHeader>
+          <CardTitle>Media Sections</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Show Photos</Label>
+              <p className="text-sm text-white/50">Display press photos section</p>
+            </div>
+            <Switch
+              checked={config.showPhotos}
+              onCheckedChange={(checked) => setConfig({ ...config, showPhotos: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Show Logos</Label>
+              <p className="text-sm text-white/50">Display brand logos section</p>
+            </div>
+            <Switch
+              checked={config.showLogos}
+              onCheckedChange={(checked) => setConfig({ ...config, showLogos: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Show Videos</Label>
+              <p className="text-sm text-white/50">Display video content</p>
+            </div>
+            <Switch
+              checked={config.showVideos}
+              onCheckedChange={(checked) => setConfig({ ...config, showVideos: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Show Press Releases</Label>
+              <p className="text-sm text-white/50">Display press releases section</p>
+            </div>
+            <Switch
+              checked={config.showPressReleases}
+              onCheckedChange={(checked) => setConfig({ ...config, showPressReleases: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Show Social Links</Label>
+              <p className="text-sm text-white/50">Display social media links</p>
+            </div>
+            <Switch
+              checked={config.showSocialLinks}
+              onCheckedChange={(checked) => setConfig({ ...config, showSocialLinks: checked })}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-morphism">
+        <CardHeader>
+          <CardTitle>Usage Settings</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Allow Downloads</Label>
+              <p className="text-sm text-white/50">Enable high-res asset downloads</p>
+            </div>
+            <Switch
+              checked={config.allowDownloads}
+              onCheckedChange={(checked) => setConfig({ ...config, allowDownloads: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Require Attribution</Label>
+              <p className="text-sm text-white/50">Show attribution requirements</p>
+            </div>
+            <Switch
+              checked={config.requireAttribution}
+              onCheckedChange={(checked) => setConfig({ ...config, requireAttribution: checked })}
+            />
+          </div>
+
+          {config.requireAttribution && (
+            <div>
+              <Label>Attribution Text</Label>
+              <Input
+                value={config.attributionText}
+                onChange={(e) => setConfig({ ...config, attributionText: e.target.value })}
+                className="bg-black/20 border-white/10"
+                placeholder="Photo credit: JESTFLY"
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 
