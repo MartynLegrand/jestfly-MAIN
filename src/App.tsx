@@ -16,6 +16,7 @@ import LiveStreamPage from './pages/LiveStreamPage';
 import PressKitPage from './pages/PressKitPage';
 import AirdropPage from './pages/AirdropPage';
 import EcommercePage from './pages/EcommercePage';
+import ResourcesPage from './pages/ResourcesPage';
 import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -89,7 +90,7 @@ function App() {
                 <Route path="/nft-store" element={<NFTStorePage />} />
                 <Route path="/community/*" element={<CommunityPage />} />
                 <Route path="/bookings" element={<BookingsPage />} />
-                <Route path="/resources" element={<EcommercePage />} />
+                <Route path="/resources" element={<ResourcesPage />} />
                 <Route path="/notes" element={<NotesPage />} />
                 <Route path="/profile" element={
                   <ProtectedRoute>
