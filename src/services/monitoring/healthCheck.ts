@@ -74,11 +74,11 @@ class HealthCheckService {
         status: 'pass',
         responseTime
       };
-    } catch (error: any) {
+    } catch (error) {
       return {
         status: 'fail',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -92,7 +92,7 @@ class HealthCheckService {
       localStorage.setItem(testKey, 'test');
       localStorage.removeItem(testKey);
       return { status: 'pass' };
-    } catch (error: any) {
+    } catch {
       return {
         status: 'fail',
         message: 'localStorage not available'
@@ -116,7 +116,7 @@ class HealthCheckService {
         status: 'fail',
         message: 'WebGL not supported'
       };
-    } catch (error: any) {
+    } catch {
       return {
         status: 'fail',
         message: 'WebGL check failed'
@@ -128,6 +128,14 @@ class HealthCheckService {
    * Get system information
    */
   getSystemInfo() {
+    interface PerformanceMemory {
+      usedJSHeapSize: number;
+      totalJSHeapSize: number;
+      jsHeapSizeLimit: number;
+    }
+
+    const perfWithMemory = performance as Performance & { memory?: PerformanceMemory };
+
     return {
       userAgent: navigator.userAgent,
       platform: navigator.platform,
@@ -136,10 +144,10 @@ class HealthCheckService {
       cookieEnabled: navigator.cookieEnabled,
       screenResolution: `${window.screen.width}x${window.screen.height}`,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
-      memory: (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
+      memory: perfWithMemory.memory ? {
+        usedJSHeapSize: perfWithMemory.memory.usedJSHeapSize,
+        totalJSHeapSize: perfWithMemory.memory.totalJSHeapSize,
+        jsHeapSizeLimit: perfWithMemory.memory.jsHeapSizeLimit
       } : undefined
     };
   }

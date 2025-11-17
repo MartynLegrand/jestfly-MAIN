@@ -9,12 +9,24 @@ interface ErrorContext {
   component?: string;
   action?: string;
   userId?: string;
-  additionalInfo?: Record<string, any>;
+  additionalInfo?: Record<string, unknown>;
+}
+
+interface ErrorData {
+  message: string;
+  stack?: string;
+  timestamp: string;
+  url: string;
+  userAgent: string;
+  component?: string;
+  action?: string;
+  userId?: string;
+  additionalInfo?: Record<string, unknown>;
 }
 
 class ErrorMonitoringService {
   private isEnabled: boolean;
-  private errorQueue: Array<any> = [];
+  private errorQueue: ErrorData[] = [];
   private maxQueueSize = 50;
 
   constructor() {
@@ -104,7 +116,7 @@ class ErrorMonitoringService {
   /**
    * Get recent errors
    */
-  getRecentErrors(): Array<any> {
+  getRecentErrors(): ErrorData[] {
     return [...this.errorQueue];
   }
 
@@ -118,11 +130,11 @@ class ErrorMonitoringService {
   /**
    * Send error to tracking service
    */
-  private sendToErrorService(errorData: any): void {
+  private sendToErrorService(errorData: ErrorData): void {
     // Integrate with error tracking service
     // Example: Sentry
-    if (typeof window !== 'undefined' && (window as any).Sentry) {
-      (window as any).Sentry.captureException(errorData);
+    if (typeof window !== 'undefined' && (window as Window & { Sentry?: { captureException: (data: unknown) => void } }).Sentry) {
+      (window as Window & { Sentry: { captureException: (data: unknown) => void } }).Sentry.captureException(errorData);
     }
 
     // Example: Custom API endpoint
@@ -144,7 +156,7 @@ export const errorMonitoring = new ErrorMonitoringService();
 export const captureComponentError = (
   error: Error,
   componentName: string,
-  errorInfo?: any
+  errorInfo?: Record<string, unknown>
 ): void => {
   errorMonitoring.captureError(error, {
     component: componentName,

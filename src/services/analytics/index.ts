@@ -9,14 +9,14 @@ interface AnalyticsEvent {
   action: string;
   label?: string;
   value?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 interface UserProperties {
   userId?: string;
   userRole?: string;
   accountType?: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined;
 }
 
 class AnalyticsService {
@@ -65,7 +65,7 @@ class AnalyticsService {
   /**
    * Track page view
    */
-  trackPageView(pageName: string, properties?: Record<string, any>): void {
+  trackPageView(pageName: string, properties?: Record<string, unknown>): void {
     this.track({
       category: 'Navigation',
       action: 'Page View',
@@ -93,7 +93,7 @@ class AnalyticsService {
   /**
    * Track error
    */
-  trackError(error: Error, context?: Record<string, any>): void {
+  trackError(error: Error, context?: Record<string, unknown>): void {
     this.track({
       category: 'Error',
       action: 'Error Occurred',
@@ -108,7 +108,7 @@ class AnalyticsService {
   /**
    * Track performance metric
    */
-  trackPerformance(metric: string, value: number, metadata?: Record<string, any>): void {
+  trackPerformance(metric: string, value: number, metadata?: Record<string, unknown>): void {
     this.track({
       category: 'Performance',
       action: metric,
@@ -120,11 +120,11 @@ class AnalyticsService {
   /**
    * Send data to analytics provider
    */
-  private sendToProvider(data: any): void {
+  private sendToProvider(data: Record<string, unknown>): void {
     // Implement integration with your analytics provider
     // Example: Google Analytics 4
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', data.action, {
+    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
+      (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', data.action as string, {
         event_category: data.category,
         event_label: data.label,
         value: data.value,
