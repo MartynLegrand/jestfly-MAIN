@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CommunityPost, CreatePostData, UpdatePostData, FeedOptions } from '@/types/community';
 import { toast } from 'sonner';
+import { communityAnalytics } from '@/utils/communityAnalytics';
 
 export function useCommunityPosts(options?: FeedOptions) {
   const [posts, setPosts] = useState<CommunityPost[]>([]);
@@ -9,6 +10,7 @@ export function useCommunityPosts(options?: FeedOptions) {
   const [hasMore, setHasMore] = useState(true);
 
   const fetchPosts = async (refresh = false) => {
+    const timer = communityAnalytics.startTimer('feedLoad');
     try {
       setLoading(true);
 
@@ -89,15 +91,18 @@ export function useCommunityPosts(options?: FeedOptions) {
         setHasMore(false);
       }
 
+      timer(true);
     } catch (error) {
       console.error('Error fetching posts:', error);
       toast.error('Failed to load posts');
+      timer(false, error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
   };
 
   const createPost = async (postData: CreatePostData) => {
+    const timer = communityAnalytics.startTimer('postCreation');
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
@@ -128,10 +133,20 @@ export function useCommunityPosts(options?: FeedOptions) {
 
       setPosts(prev => [data, ...prev]);
       toast.success('Post created successfully!');
+      
+      // Track engagement
+      communityAnalytics.trackEngagement('post_created', {
+        postId: data.id,
+        hasMedia: postData.media_urls && postData.media_urls.length > 0,
+        hashtags: postData.hashtags?.length || 0,
+      });
+      
+      timer(true);
       return data;
     } catch (error) {
       console.error('Error creating post:', error);
       toast.error('Failed to create post');
+      timer(false, error instanceof Error ? error.message : 'Unknown error');
       throw error;
     }
   };
@@ -206,6 +221,9 @@ export function useCommunityPosts(options?: FeedOptions) {
             ? { ...p, is_liked: true, likes_count: p.likes_count + 1 }
             : p
         ));
+        
+        // Track engagement for new likes
+        communityAnalytics.trackEngagement('post_liked', { postId });
       }
     } catch (error) {
       console.error('Error toggling like:', error);
@@ -214,6 +232,7 @@ export function useCommunityPosts(options?: FeedOptions) {
   };
 
   const uploadMedia = async (file: File): Promise<string> => {
+    const timer = communityAnalytics.startTimer('imageUpload');
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
@@ -231,10 +250,12 @@ export function useCommunityPosts(options?: FeedOptions) {
         .from('community-media')
         .getPublicUrl(fileName);
 
+      timer(true);
       return publicUrl;
     } catch (error) {
       console.error('Error uploading media:', error);
       toast.error('Failed to upload media');
+      timer(false, error instanceof Error ? error.message : 'Unknown error');
       throw error;
     }
   };
@@ -249,6 +270,50 @@ export function useCommunityPosts(options?: FeedOptions) {
 
   useEffect(() => {
     fetchPosts(true);
+
+    // Subscribe to real-time updates for new posts
+    const subscription = supabase
+      .channel('posts')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'community_posts',
+          filter: 'is_published=eq.true',
+        },
+        async (payload) => {
+          const newPost = payload.new as CommunityPost;
+          
+          // Only add if matches current filters
+          if (options?.user_id && newPost.user_id !== options.user_id) return;
+          if (newPost.moderation_status !== 'approved') return;
+
+          // Fetch the full post with profile data
+          const { data } = await supabase
+            .from('community_posts')
+            .select(`
+              *,
+              profiles:user_id (
+                id,
+                username,
+                avatar_url,
+                full_name
+              )
+            `)
+            .eq('id', newPost.id)
+            .single();
+
+          if (data) {
+            setPosts(prev => [data, ...prev]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [options?.user_id, options?.hashtag, options?.following_only]);
 
   return {
