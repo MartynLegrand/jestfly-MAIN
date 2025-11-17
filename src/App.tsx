@@ -19,6 +19,8 @@ import EcommercePage from './pages/EcommercePage';
 import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import { AuthProvider } from './contexts/auth';
 import { LoginForm } from './components/auth';
 import { RegisterForm } from './components/auth';
@@ -85,7 +87,9 @@ function App() {
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />
-                <Route path="/store/*" element={<NewStorePage />} />
+                <Route path="/store" element={<NewStorePage />} />
+                <Route path="/store/checkout" element={<CheckoutPage />} />
+                <Route path="/store/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
                 <Route path="/nft-store" element={<NFTStorePage />} />
                 <Route path="/community/*" element={<CommunityPage />} />
                 <Route path="/bookings" element={<BookingsPage />} />
