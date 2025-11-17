@@ -7,7 +7,7 @@ interface GoldCoin3DProps {
   className?: string;
 }
 
-const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) => {
+const GoldCoin3D: React.FC<GoldCoin3DProps> = React.memo(({ size = 100, className = "" }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -161,6 +161,8 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
       style={{ width: size, height: size }}
     />
   );
-};
+});
+
+GoldCoin3D.displayName = 'GoldCoin3D';
 
 export default GoldCoin3D;

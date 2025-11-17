@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const FrontCrystal: React.FC = () => {
+const FrontCrystal: React.FC = React.memo(() => {
   const crystalRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -59,6 +59,8 @@ const FrontCrystal: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+FrontCrystal.displayName = 'FrontCrystal';
 
 export default FrontCrystal;

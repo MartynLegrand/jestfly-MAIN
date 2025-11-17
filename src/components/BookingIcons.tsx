@@ -8,7 +8,7 @@ interface BookingIconProps {
   className?: string;
 }
 
-export const BookingTypeIcon: React.FC<BookingIconProps> = ({ type, size = 24, className = "" }) => {
+export const BookingTypeIcon: React.FC<BookingIconProps> = React.memo(({ type, size = 24, className = "" }) => {
   switch(type) {
     case 'dj':
       return <Headphones size={size} className={`glow-purple ${className}`} />;
@@ -19,9 +19,9 @@ export const BookingTypeIcon: React.FC<BookingIconProps> = ({ type, size = 24, c
     default:
       return null;
   }
-};
+});
 
-export const EventIcon: React.FC<BookingIconProps & { name: string }> = ({ name, size = 20, className = "" }) => {
+export const EventIcon: React.FC<BookingIconProps & { name: string }> = React.memo(({ name, size = 20, className = "" }) => {
   switch(name) {
     case 'date':
       return <CalendarCheck size={size} className={className} />;
@@ -34,7 +34,7 @@ export const EventIcon: React.FC<BookingIconProps & { name: string }> = ({ name,
     default:
       return null;
   }
-};
+});
 
 // Export the Lucide icons directly for components that need them
 export { Clock, CalendarCheck as Calendar } from 'lucide-react';
