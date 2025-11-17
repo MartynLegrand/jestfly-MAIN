@@ -44,7 +44,7 @@ export function useCommunityPosts(options?: FeedOptions) {
             .eq('follower_id', user.id);
 
           if (following && following.length > 0) {
-            const followingIds = following.map(f => f.following_id);
+            const followingIds = following.map(followRecord => followRecord.following_id);
             query = query.in('user_id', followingIds);
           }
         }
@@ -145,7 +145,7 @@ export function useCommunityPosts(options?: FeedOptions) {
 
       if (error) throw error;
 
-      setPosts(prev => prev.map(p => p.id === postId ? { ...p, ...updates } : p));
+      setPosts(prev => prev.map(post => post.id === postId ? { ...post, ...updates } : post));
       toast.success('Post updated successfully!');
     } catch (error) {
       console.error('Error updating post:', error);
@@ -163,7 +163,7 @@ export function useCommunityPosts(options?: FeedOptions) {
 
       if (error) throw error;
 
-      setPosts(prev => prev.filter(p => p.id !== postId));
+      setPosts(prev => prev.filter(post => post.id !== postId));
       toast.success('Post deleted successfully!');
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -177,7 +177,7 @@ export function useCommunityPosts(options?: FeedOptions) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      const post = posts.find(p => p.id === postId);
+      const post = posts.find(existingPost => existingPost.id === postId);
       if (!post) return;
 
       if (post.is_liked) {
@@ -189,10 +189,10 @@ export function useCommunityPosts(options?: FeedOptions) {
 
         if (error) throw error;
 
-        setPosts(prev => prev.map(p =>
-          p.id === postId
-            ? { ...p, is_liked: false, likes_count: p.likes_count - 1 }
-            : p
+        setPosts(prev => prev.map(post =>
+          post.id === postId
+            ? { ...post, is_liked: false, likes_count: post.likes_count - 1 }
+            : post
         ));
       } else {
         const { error } = await supabase
@@ -201,10 +201,10 @@ export function useCommunityPosts(options?: FeedOptions) {
 
         if (error) throw error;
 
-        setPosts(prev => prev.map(p =>
-          p.id === postId
-            ? { ...p, is_liked: true, likes_count: p.likes_count + 1 }
-            : p
+        setPosts(prev => prev.map(post =>
+          post.id === postId
+            ? { ...post, is_liked: true, likes_count: post.likes_count + 1 }
+            : post
         ));
       }
     } catch (error) {

@@ -1,8 +1,8 @@
 
 // Utility functions for the booking page
 
-// Get the right gradient based on booking type
-export const getGradientClass = (bookingType: 'dj' | 'studio' | 'consultation') => {
+// Get the background gradient CSS classes based on booking type
+export const getBackgroundGradientClassForBookingType = (bookingType: 'dj' | 'studio' | 'consultation') => {
   switch(bookingType) {
     case 'dj':
       return 'from-purple-600/20 to-blue-600/20';
@@ -13,8 +13,8 @@ export const getGradientClass = (bookingType: 'dj' | 'studio' | 'consultation') 
   }
 };
 
-// Get button gradient based on booking type
-export const getButtonGradient = (bookingType: 'dj' | 'studio' | 'consultation') => {
+// Get button gradient CSS classes with hover states based on booking type
+export const getButtonGradientClassForBookingType = (bookingType: 'dj' | 'studio' | 'consultation') => {
   switch(bookingType) {
     case 'dj':
       return 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700';

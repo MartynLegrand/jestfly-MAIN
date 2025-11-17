@@ -5,7 +5,7 @@ import BookingTypeSelector from '../components/bookings/BookingTypeSelector';
 import CalendarSection from '../components/bookings/CalendarSection';
 import BookingForm from '../components/bookings/BookingForm';
 import SidebarContent from '../components/bookings/SidebarContent';
-import { getGradientClass, getButtonGradient } from '../utils/bookingUtils';
+import { getBackgroundGradientClassForBookingType, getButtonGradientClassForBookingType } from '../utils/bookingUtils';
 
 const BookingsPage: React.FC = () => {
   const [bookingType, setBookingType] = useState<'dj' | 'studio' | 'consultation'>('dj');
@@ -64,7 +64,7 @@ const BookingsPage: React.FC = () => {
               bookingType={bookingType} 
               selectedDate={selectedDate} 
               handleDateSelect={handleDateSelect} 
-              getGradientClass={() => getGradientClass(bookingType)} 
+              getGradientClass={() => getBackgroundGradientClassForBookingType(bookingType)} 
             />
             
             {/* Booking Form */}
@@ -73,8 +73,8 @@ const BookingsPage: React.FC = () => {
               formData={formData}
               handleChange={handleChange}
               handleSubmit={handleSubmit}
-              getGradientClass={() => getGradientClass(bookingType)}
-              getButtonGradient={() => getButtonGradient(bookingType)}
+              getGradientClass={() => getBackgroundGradientClassForBookingType(bookingType)}
+              getButtonGradient={() => getButtonGradientClassForBookingType(bookingType)}
             />
           </div>
           

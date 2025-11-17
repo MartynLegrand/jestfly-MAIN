@@ -201,7 +201,7 @@ const NewStorePage: React.FC = () => {
                       
                       {/* Category badge */}
                       <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium bg-black/50 backdrop-blur-sm border border-white/10">
-                        {categories.find(c => c.id === product.category)?.name}
+                        {categories.find(category => category.id === product.category)?.name}
                       </div>
                     </div>
                     

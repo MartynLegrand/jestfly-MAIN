@@ -102,7 +102,7 @@ export function useCommunityFollows(userId?: string) {
       if (error) throw error;
 
       if (userId === targetUserId) {
-        setFollowers(prev => prev.filter(f => f.follower_id !== user.id));
+        setFollowers(prev => prev.filter(follower => follower.follower_id !== user.id));
       }
 
       setIsFollowing(false);

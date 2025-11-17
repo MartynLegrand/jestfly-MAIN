@@ -134,7 +134,7 @@ const FontsTab = () => {
         url: googleFontUrl,
         type: 'google',
         created_at: new Date().toISOString(),
-        weights: googleFontWeights.split(',').map(w => w.trim())
+        weights: googleFontWeights.split(',').map(weight => weight.trim())
       };
       
       setFonts([newFont, ...fonts]);
@@ -245,10 +245,10 @@ const FontsTab = () => {
   
   // Remover fonte
   const removeFont = (fontId: string) => {
-    const fontToRemove = fonts.find(f => f.id === fontId);
+    const fontToRemove = fonts.find(font => font.id === fontId);
     if (!fontToRemove) return;
     
-    setFonts(fonts.filter(f => f.id !== fontId));
+    setFonts(fonts.filter(font => font.id !== fontId));
     
     toast({
       title: "Fonte removida",
@@ -257,7 +257,7 @@ const FontsTab = () => {
     
     // Se a fonte removida era a atual, resetar para a primeira disponível
     if (currentSiteFont === fontToRemove.name && fonts.length > 1) {
-      const nextFont = fonts.find(f => f.id !== fontId);
+      const nextFont = fonts.find(font => font.id !== fontId);
       if (nextFont) {
         applyFont(nextFont);
       }
