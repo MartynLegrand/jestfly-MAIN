@@ -8,6 +8,9 @@ import NotesPage from './pages/NotesPage';
 import HomePage from './pages/HomePage';
 import NewStorePage from './pages/NewStorePage';
 import NFTStorePage from './pages/NFTStorePage';
+import WalletPage from './pages/WalletPage';
+import InventoryPage from './pages/InventoryPage';
+import CheckoutPage from './pages/CheckoutPage';
 import CommunityPage from './pages/CommunityPage';
 import BookingsPage from './pages/BookingsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -58,6 +61,8 @@ function App() {
     { label: 'Início', href: '/' },
     { label: 'Store', href: '/store' },
     { label: 'NFT Store', href: '/nft-store' },
+    { label: 'Wallet', href: '/wallet' },
+    { label: 'Inventory', href: '/inventory' },
     { label: 'Community', href: '/community' },
     { label: 'Bookings', href: '/bookings' },
     { label: 'Resources', href: '/resources' },
@@ -87,6 +92,21 @@ function App() {
                 <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />
                 <Route path="/store/*" element={<NewStorePage />} />
                 <Route path="/nft-store" element={<NFTStorePage />} />
+                <Route path="/wallet" element={
+                  <ProtectedRoute>
+                    <WalletPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/inventory" element={
+                  <ProtectedRoute>
+                    <InventoryPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/checkout" element={
+                  <ProtectedRoute>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                } />
                 <Route path="/community/*" element={<CommunityPage />} />
                 <Route path="/bookings" element={<BookingsPage />} />
                 <Route path="/resources" element={<EcommercePage />} />

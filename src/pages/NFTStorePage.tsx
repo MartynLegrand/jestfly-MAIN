@@ -220,11 +220,19 @@ const NFTStorePage = () => {
   return (
     <div className="min-h-screen bg-black text-white pt-20">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">NFT Store</h1>
-          <p className="text-white/70 max-w-2xl">
-            Discover exclusive digital and physical NFTs. Own unique collectibles, earn rewards, and join the community.
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">NFT Store</h1>
+            <p className="text-white/70 max-w-2xl">
+              Discover exclusive digital and physical NFTs. Own unique collectibles, earn rewards, and join the community.
+            </p>
+          </div>
+          <Link to="/checkout">
+            <Button size="lg" className="gap-2">
+              <ShoppingCart className="w-5 h-5" />
+              Checkout
+            </Button>
+          </Link>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
