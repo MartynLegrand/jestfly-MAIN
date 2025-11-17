@@ -228,10 +228,12 @@ The LOD (Level of Detail) system is carefully tuned so:
 ## 📖 Additional Resources
 
 ### Documentation:
-- **Full audit:** `NAVIGATION_AUDIT.md`
-- **Three.js analysis:** `THREE_JS_VS_BABYLON_ANALYSIS.md`
-- **Fix details:** `FIXES_SUMMARY.md`
-- **Implementation:** `OPTIMIZATION_IMPLEMENTATION_SUMMARY.md`
+- **Full audit:** `docs/features/navigation-audit.md`
+- **Three.js analysis:** `docs/features/three-vs-babylon-analysis.md`
+- **Fix details:** `docs/features/fixes-summary.md`
+- **Implementation:** `docs/features/optimization-summary.md`
+- **Admin dashboard:** `docs/admin/dashboard-complete.md`
+- **NFT system:** `docs/nft/system-guide.md`
 
 ### Support:
 - 💬 Check browser console for errors
@@ -268,14 +270,14 @@ The LOD (Level of Detail) system is carefully tuned so:
 ### Want to understand how it works?
 
 Read these files in order:
-1. `NAVIGATION_AUDIT.md` - Problems we solved
-2. `THREE_JS_VS_BABYLON_ANALYSIS.md` - Why Three.js
-3. `FIXES_SUMMARY.md` - What we fixed
-4. `OPTIMIZATION_IMPLEMENTATION_SUMMARY.md` - How we did it
+1. `docs/features/navigation-audit.md` - Problems we solved
+2. `docs/features/three-vs-babylon-analysis.md` - Why Three.js
+3. `docs/features/fixes-summary.md` - What we fixed
+4. `docs/features/optimization-summary.md` - How we did it
 
 ### Want to contribute?
 
-Check the "Future Enhancements" section in `OPTIMIZATION_IMPLEMENTATION_SUMMARY.md` for ideas!
+Check the "Future Enhancements" section in `docs/features/optimization-summary.md` for ideas!
 
 ---
 
