@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JESTFLY Preview</title>
+<style>
+  :root { color-scheme: dark light; }
+  body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; background: #0c0c0f; color: #e6e6ea; }
+  header { padding: 16px 20px; border-bottom: 1px solid #22232a; background: #0f1014; position: sticky; top: 0; }
+  h1 { margin: 0; font-size: 18px; letter-spacing: 0.4px; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px; }
+  section { margin-bottom: 28px; }
+  .card { border: 1px solid #22232a; border-radius: 10px; padding: 16px; background: #12131a; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 16px; }
+  .muted { color: #9aa0a6; font-size: 14px; }
+  a { color: #8ab4f8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  video { width: 100%; height: auto; border-radius: 8px; background: #0a0b0e; }
+</style>
+</head>
+<body>
+<header>
+  <h1>JESTFLY — Preview</h1>
+</header>
+<main>
+  <section>
+    <div class="card">
+      <div id="bio" class="muted"></div>
+    </div>
+  </section>
+  <section>
+    <h2>Vídeos</h2>
+    <div id="videos" class="grid"></div>
+    <div id="videos-empty" class="muted" style="display:none">Nenhum vídeo convertido ainda.</div>
+  </section>
+  <section>
+    <h2>3D</h2>
+    <div id="threeD" class="grid"></div>
+    <div id="threeD-empty" class="muted" style="display:none">Nenhum modelo GLB disponível ainda.</div>
+  </section>
+  <section>
+    <div class="card muted">Fonte: <a href="/storage/presskit.json" target="_blank">/storage/presskit.json</a></div>
+  </section>
+</main>
+<script>
+async function load() {
+  let pk = null;
+  try { const r = await fetch('/storage/presskit.json', {cache:'no-store'}); if (r.ok) pk = await r.json(); } catch {}
+  const bio = document.getElementById('bio');
+  bio.textContent = (pk && pk.bio) ? pk.bio : '';
+  const videosEl = document.getElementById('videos');
+  const videosEmpty = document.getElementById('videos-empty');
+  const threeEl = document.getElementById('threeD');
+  const threeEmpty = document.getElementById('threeD-empty');
+  const videos = (pk && Array.isArray(pk.videos)) ? pk.videos : [];
+  const threeD = (pk && Array.isArray(pk.threeD)) ? pk.threeD : [];
+  if (videos.length === 0) {
+    const mp4 = '/storage/videos/oculos2.mp4';
+    const webm = '/storage/videos/oculos2.webm';
+    const mov = '/storage/videos/oculos2.mov';
+    const addVideo = (src, title) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card';
+      const t = document.createElement('div');
+      t.className = 'muted';
+      t.textContent = title;
+      const v = document.createElement('video');
+      v.controls = true;
+      v.src = src;
+      wrap.appendChild(t); wrap.appendChild(v);
+      videosEl.appendChild(wrap);
+    };
+    addVideo(mp4, 'Óculos (MP4)');
+    addVideo(webm, 'Óculos (WebM)');
+    addVideo(mov, 'Óculos (MOV)');
+  }
+  else {
+    videos.forEach(item => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card';
+      const t = document.createElement('div'); t.className = 'muted'; t.textContent = item.title || item.src;
+      const v = document.createElement('video'); v.controls = true; v.src = item.src;
+      wrap.appendChild(t); wrap.appendChild(v);
+      videosEl.appendChild(wrap);
+    });
+  }
+  videosEmpty.style.display = videosEl.children.length ? 'none' : 'block';
+  if (threeD.length === 0) {
+    const glb = '/storage/3d/logo-3d.glb';
+    const fbx = '/storage/3d/logo%203d.fbx';
+    const addLink = (href, title) => {
+      const wrap = document.createElement('div'); wrap.className = 'card';
+      const a = document.createElement('a'); a.href = href; a.textContent = title; a.target = '_blank';
+      wrap.appendChild(a); threeEl.appendChild(wrap);
+    };
+    addLink(glb, 'Logo 3D (GLB)');
+    addLink(fbx, 'Logo 3D (FBX)');
+  } else {
+    threeD.forEach(item => {
+      const wrap = document.createElement('div'); wrap.className = 'card';
+      const a = document.createElement('a'); a.href = item.src; a.textContent = item.title || item.src; a.target = '_blank';
+      wrap.appendChild(a); threeEl.appendChild(wrap);
+    });
+  }
+  threeEmpty.style.display = threeEl.children.length ? 'none' : 'block';
+}
+load();
+</script>
+</body>
+</html>
