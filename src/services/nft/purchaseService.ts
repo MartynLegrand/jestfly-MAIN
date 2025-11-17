@@ -2,6 +2,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { walletService } from './walletService';
 import { inventoryService } from './inventoryService';
 import { cartService } from './cartService';
+import { rewardsService } from './rewardsService';
 import type { 
   PurchaseNFTInput, 
   PaymentMethod, 
@@ -174,6 +175,14 @@ export const purchaseService = {
 
       if (updateError) {
         throw new Error('Failed to update transaction status');
+      }
+
+      // Trigger first purchase mission check
+      try {
+        await rewardsService.triggerFirstPurchase(userId);
+      } catch (error) {
+        // Don't fail the purchase if mission trigger fails
+        console.error('Failed to trigger first purchase mission:', error);
       }
 
       return completedTransaction as ProductTransaction;

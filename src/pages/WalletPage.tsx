@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/auth';
-import { walletService } from '@/services/nft';
+import { walletService, rewardsService } from '@/services/nft';
 import { supabase } from '@/integrations/supabase/client';
 import type { UserWallet, ProductTransaction, RewardsMission, UserReward } from '@/types/nftTypes';
 
@@ -64,50 +64,23 @@ const WalletPage = () => {
   };
 
   const loadMissions = async () => {
-    const { data, error } = await supabase
-      .from('rewards_missions')
-      .select('*')
-      .eq('is_active', true)
-      .order('reward_amount', { ascending: false });
-
-    if (error) throw error;
-    return data as RewardsMission[];
+    return rewardsService.getActiveMissions();
   };
 
   const loadUserRewards = async () => {
     if (!user) return [];
-    
-    const { data, error } = await supabase
-      .from('user_rewards')
-      .select('*, mission:rewards_missions(*)')
-      .eq('user_id', user.id)
-      .order('completed_at', { ascending: false });
-
-    if (error) throw error;
-    return data as UserReward[];
+    return rewardsService.getUserRewards(user.id);
   };
 
   const hasMissionCompleted = (missionId: string) => {
     return userRewards.some(reward => reward.mission_id === missionId);
   };
 
-  const completeMission = async (missionId: string, rewardAmount: number) => {
+  const completeMission = async (missionId: string) => {
     if (!user) return;
 
     try {
-      // Add reward to user_rewards
-      const { error: rewardError } = await supabase
-        .from('user_rewards')
-        .insert({
-          user_id: user.id,
-          mission_id: missionId,
-          reward_amount: rewardAmount,
-        });
-
-      if (rewardError) throw rewardError;
-
-      // Add balance to wallet
-      await walletService.addBalance(user.id, rewardAmount);
+      await rewardsService.completeMission(user.id, missionId);
 
       toast({
         title: 'Mission Completed!',
