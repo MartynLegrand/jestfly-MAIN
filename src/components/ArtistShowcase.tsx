@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '../hooks/use-mobile';
+import Card3D from './effects/Card3D';
+import ScrollFadeIn from './effects/ScrollFadeIn';
 import * as THREE from 'three';
 
 const ArtistShowcase: React.FC = () => {
@@ -137,66 +139,114 @@ const ArtistShowcase: React.FC = () => {
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tighter">
-            <span className="text-gradient">MEET OUR</span> ARTISTS
-          </h2>
-          <p className="text-white/70 max-w-2xl mx-auto">
-            The visionary talents redefining electronic music and pushing the boundaries of artistic expression.
-          </p>
-        </div>
+        <ScrollFadeIn>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tighter">
+              <span className="text-gradient-animate">MEET OUR</span> ARTISTS
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto">
+              The visionary talents redefining electronic music and pushing the boundaries of artistic expression.
+            </p>
+          </div>
+        </ScrollFadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {artists.map((artist, index) => (
-            <motion.div
-              key={index}
-              className="relative overflow-hidden rounded-3xl group card-modern hover-lift"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              onMouseEnter={() => setActiveCard(index)}
-              onMouseLeave={() => setActiveCard(null)}
-            >
-              <div className="aspect-[2/3] w-full overflow-hidden">
-                <img
-                  src={artist.image}
-                  alt={artist.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-
-              <motion.div
-                className="absolute inset-0 backdrop-blur-md border border-white/20 transition-all duration-300"
-                animate={{
-                  backdropFilter: activeCard === index ? "blur(0px)" : "blur(8px)",
-                  backgroundColor: activeCard === index ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.5)"
-                }}
-              >
-                <div className="absolute w-16 h-16 right-4 top-4 opacity-50 rotate-45 rounded-lg bg-gradient-to-tr from-primary-500/30 to-transparent"></div>
-                <div className="absolute w-24 h-24 -left-6 bottom-10 opacity-30 rounded-full bg-gradient-to-tr from-accent-500/30 to-transparent"></div>
-
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-1">{artist.name}</h3>
-                  <p className="text-white/70 text-sm mb-3">{artist.role}</p>
+            <ScrollFadeIn key={index} delay={index * 100}>
+              {isMobile ? (
+                <motion.div
+                  className="relative overflow-hidden rounded-3xl group card-modern hover-lift-enhanced glass-morphism-enhanced"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  onMouseEnter={() => setActiveCard(index)}
+                  onMouseLeave={() => setActiveCard(null)}
+                >
+                  <div className="aspect-[2/3] w-full overflow-hidden shimmer">
+                    <img
+                      src={artist.image}
+                      alt={artist.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
 
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
+                    className="absolute inset-0 backdrop-blur-md border border-white/20 transition-all duration-300"
                     animate={{
-                      opacity: activeCard === index ? 1 : 0,
-                      height: activeCard === index ? "auto" : 0
+                      backdropFilter: activeCard === index ? "blur(0px)" : "blur(8px)",
+                      backgroundColor: activeCard === index ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.5)"
                     }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
                   >
-                    <p className="mb-4">{artist.description}</p>
-                    <button className="btn-modern">
-                      DISCOVER MORE
-                    </button>
+                    <div className="absolute w-16 h-16 right-4 top-4 opacity-50 rotate-45 rounded-lg bg-gradient-to-tr from-primary-500/30 to-transparent blob"></div>
+                    <div className="absolute w-24 h-24 -left-6 bottom-10 opacity-30 rounded-full bg-gradient-to-tr from-accent-500/30 to-transparent blob"></div>
+
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-2xl font-bold mb-1">{artist.name}</h3>
+                      <p className="text-white/70 text-sm mb-3">{artist.role}</p>
+
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{
+                          opacity: activeCard === index ? 1 : 0,
+                          height: activeCard === index ? "auto" : 0
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="mb-4">{artist.description}</p>
+                        <button className="btn-modern btn-magnetic ripple">
+                          DISCOVER MORE
+                        </button>
+                      </motion.div>
+                    </div>
                   </motion.div>
-                </div>
-              </motion.div>
-            </motion.div>
+                </motion.div>
+              ) : (
+                <Card3D className="relative overflow-hidden rounded-3xl group card-modern hover-lift-enhanced glass-morphism-enhanced" intensity={5}>
+                  <div className="aspect-[2/3] w-full overflow-hidden shimmer">
+                    <img
+                      src={artist.image}
+                      alt={artist.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+
+                  <motion.div
+                    className="absolute inset-0 backdrop-blur-md border border-white/20 transition-all duration-300"
+                    onMouseEnter={() => setActiveCard(index)}
+                    onMouseLeave={() => setActiveCard(null)}
+                    animate={{
+                      backdropFilter: activeCard === index ? "blur(0px)" : "blur(8px)",
+                      backgroundColor: activeCard === index ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.5)"
+                    }}
+                  >
+                    <div className="absolute w-16 h-16 right-4 top-4 opacity-50 rotate-45 rounded-lg bg-gradient-to-tr from-primary-500/30 to-transparent blob"></div>
+                    <div className="absolute w-24 h-24 -left-6 bottom-10 opacity-30 rounded-full bg-gradient-to-tr from-accent-500/30 to-transparent blob"></div>
+
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-2xl font-bold mb-1">{artist.name}</h3>
+                      <p className="text-white/70 text-sm mb-3">{artist.role}</p>
+
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{
+                          opacity: activeCard === index ? 1 : 0,
+                          height: activeCard === index ? "auto" : 0
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="mb-4">{artist.description}</p>
+                        <button className="btn-modern btn-magnetic ripple">
+                          DISCOVER MORE
+                        </button>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </Card3D>
+              )}
+            </ScrollFadeIn>
           ))}
         </div>
       </div>

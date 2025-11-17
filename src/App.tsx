@@ -1,4 +1,3 @@
-
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlassHeader from './components/GlassHeader';
@@ -18,44 +17,42 @@ import EcommercePage from './pages/EcommercePage';
 import AdminPanel from './pages/AdminPanel';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import { AuthProvider } from './contexts/auth'; // Updated path
+import { AuthProvider } from './contexts/auth';
 import { LoginForm } from './components/auth';
 import { RegisterForm } from './components/auth';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Footer from './components/Footer';
 import LanguageProvider from './contexts/LanguageContext';
+import ScrollProgressBar from './components/effects/ScrollProgressBar';
 
 function App() {
-  // Crystal parameters with customized values for enhanced futuristic effect
   const crystalParams = {
     ...defaultModelParams,
-    color: "#ffffff", // Pure white base color for better refraction
-    metalness: 0.2, // Slight metalness for better reflections
-    roughness: 0.01, // Ultra smooth surface for crisp reflections
-    transmission: 0.98, // Near perfect transmission for glass effect
-    thickness: 0.8, // Increased thickness for more internal refraction
-    envMapIntensity: 5.0, // Boosted reflections to showcase neon environment
-    clearcoat: 1.0, // Maximum clearcoat for glossiness
-    clearcoatRoughness: 0.0, // Perfect clearcoat smoothness
-    ior: 2.5, // Higher index of refraction for diamond-like effect
-    iridescence: 1.0, // Strong iridescence for color shifts
-    iridescenceIOR: 2.0, // Enhanced iridescence refraction
+    color: "#ffffff",
+    metalness: 0.2,
+    roughness: 0.01,
+    transmission: 0.98,
+    thickness: 0.8,
+    envMapIntensity: 5.0,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.0,
+    ior: 2.5,
+    iridescence: 1.0,
+    iridescenceIOR: 2.0,
     transparent: true,
-    opacity: 0.8, // Reduced opacity for better visual effect
-    reflectivity: 1.0, // Maximum reflectivity
-    emissiveIntensity: 0.08, // Slight emission for added glow
-    emissiveColor: "#8B5CF6", // Subtle purple emission color
-    lightIntensity: 5.0 // Brighter lights to enhance the model
+    opacity: 0.8,
+    reflectivity: 1.0,
+    emissiveIntensity: 0.08,
+    emissiveColor: "#8B5CF6",
+    lightIntensity: 5.0
   };
   
-  // Gallery images
   const galleryImages = [
     { src: '/assets/imagem1.jpg', alt: 'Imagem de exemplo', crystalPosition: 'default' as const },
     { src: '/assets/imagem1.jpg', alt: 'Imagem de exemplo', crystalPosition: 'bottom-left' as const },
     { src: '/assets/imagem1.jpg', alt: 'Imagem de exemplo', crystalPosition: 'center' as const }
   ];
   
-  // Menu items for the cyber menu
   const menuItems = [
     { label: 'Início', href: '/' },
     { label: 'Store', href: '/store' },
@@ -75,6 +72,7 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-black">
+            <ScrollProgressBar />
             <GlassHeader
               menuItems={menuItems}
               logoType="video"

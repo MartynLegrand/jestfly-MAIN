@@ -1,10 +1,10 @@
-
 @import './styles/base.css';
 @import './styles/components.css';
 @import './styles/utilities.css';
 @import './styles/animations.css';
 @import './styles/hero.css';
 @import './styles/cards.css';
+@import './styles/visual-enhancements.css';
 
 @tailwind base;
 @tailwind components;
