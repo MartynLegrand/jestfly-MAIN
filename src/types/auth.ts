@@ -63,7 +63,7 @@ export interface RegisterFormData {
 }
 
 export interface AuthContextType {
-  currentUser: any | null;
+  currentUser: import('@supabase/supabase-js').User | null;
   userData: UserProfile | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, userData: Partial<UserProfile>) => Promise<void>;
