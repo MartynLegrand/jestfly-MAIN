@@ -5,13 +5,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { formatDistanceToNow } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { CommunityNotification, NotificationType } from '@/types/community';
+import { formatDistanceToNow } from '@/utils/dateUtils';
+import { getInitials } from '@/utils/userUtils';
 
 export default function NotificationCenter() {
   const {
@@ -61,15 +62,6 @@ export default function NotificationCenter() {
       default:
         return 'New notification';
     }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
   };
 
   const handleNotificationClick = (notification: CommunityNotification) => {

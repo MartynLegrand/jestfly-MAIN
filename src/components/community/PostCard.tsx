@@ -3,8 +3,9 @@ import { Heart, MessageCircle, Share2, MoreHorizontal, Clock, Bookmark } from 'l
 import { CommunityPost } from '@/types/community';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
+import { formatDate } from '@/utils/dateUtils';
+import { getInitials } from '@/utils/userUtils';
 
 interface PostCardProps {
   post: CommunityPost;
@@ -51,25 +52,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike, onComment, onShare })
   const toggleBookmark = () => {
     setIsBookmarked(!isBookmarked);
     toast.success(isBookmarked ? 'Removed from bookmarks' : 'Added to bookmarks');
-  };
-
-  const formatDate = (dateString: string) => {
-    try {
-      return formatDistanceToNow(new Date(dateString), {
-        addSuffix: true
-      });
-    } catch (e) {
-      return 'Unknown date';
-    }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
   };
 
   return (

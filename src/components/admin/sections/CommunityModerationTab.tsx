@@ -8,8 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
-import { formatDistanceToNow } from 'date-fns';
 import { CommunityPost, CommunityComment, CommunityReport } from '@/types/community';
+import { formatDistanceToNow } from '@/utils/dateUtils';
+import { getInitials } from '@/utils/userUtils';
 
 export default function CommunityModerationTab() {
   const [posts, setPosts] = useState<CommunityPost[]>([]);
@@ -195,15 +196,6 @@ export default function CommunityModerationTab() {
     } finally {
       setActionLoading(null);
     }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
   };
 
   if (loading) {
