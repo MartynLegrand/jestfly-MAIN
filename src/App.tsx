@@ -23,7 +23,6 @@ import { RegisterForm } from './components/auth';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Footer from './components/Footer';
 import LanguageProvider from './contexts/LanguageContext';
-import ScrollProgressBar from './components/effects/ScrollProgressBar';
 
 function App() {
   const crystalParams = {
@@ -72,7 +71,6 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-black">
-            <ScrollProgressBar />
             <GlassHeader
               menuItems={menuItems}
               logoType="video"
