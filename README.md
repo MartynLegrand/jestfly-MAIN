@@ -30,11 +30,19 @@ git clone <YOUR_GIT_URL>
 cd <YOUR_PROJECT_NAME>
 
 # Step 3: Install the necessary dependencies.
-npm i
+npm install
 
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
+
+**Available scripts:**
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run build:dev` - Build for development
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+- `npm test` - Run tests with Vitest
 
 **Edit a file directly in GitHub**
 
@@ -67,3 +75,13 @@ Simply open [Lovable](https://lovable.dev/projects/1a1ce7c3-2429-4cb8-959d-83cf4
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
+## Documentation
+
+Additional documentation can be found in the `docs/` directory:
+- `docs/sessions/` - Development session notes
+- `docs/features/` - Feature documentation and analysis
+- `docs/admin/` - Admin dashboard documentation
+- `docs/nft/` - NFT system guides
+
+For quick start information, see [QUICK_START_GUIDE.md](./QUICK_START_GUIDE.md)

@@ -15,7 +15,7 @@ interface ShopCategory {
 }
 
 const ShopPreview: React.FC = () => {
-  const { t, formatCurrency } = useLanguage();
+  const { t, formatCurrency, currency } = useLanguage();
   
   const categories: ShopCategory[] = [
     {
@@ -109,7 +109,7 @@ const ShopPreview: React.FC = () => {
                   )}
                   {category.paymentMethods.includes('money') && (
                     <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-700/40">
-                      {t('currency.' + useLanguage().currency)}
+                      {t('currency.' + currency)}
                     </Badge>
                   )}
                   {category.paymentMethods.includes('both') && (
