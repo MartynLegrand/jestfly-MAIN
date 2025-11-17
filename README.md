@@ -67,3 +67,32 @@ Simply open [Lovable](https://lovable.dev/projects/1a1ce7c3-2429-4cb8-959d-83cf4
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
+## Features & Roadmap
+
+### NFT Marketplace Enhancements
+
+#### ✅ Creative NFT Card Studio
+A comprehensive studio for creating, customizing and publishing 3D NFT cards across multiple platform destinations.
+
+**Features:**
+- 3D card rendering with Three.js (@react-three/fiber, @react-three/drei)
+- Real-time preview in multiple contexts (marketplace, hero, banner, stream overlay)
+- Interactive customization controls (colors, gradients, rotation, text)
+- 6 pre-designed presets for quick start
+- Multi-destination publishing (marketplace, hero/onboarding, banners, stream)
+- Offline fallback with localStorage persistence
+- Draft auto-save functionality
+
+**Access:**
+Navigate to Admin Dashboard → Creative Tools → Creative Studio (`/admin/studio`)
+
+**Next Steps:**
+- Create Supabase migrations for persistent storage tables:
+  - `nft_card_templates`
+  - `nft_marketplace_drafts`
+  - `hero_nft_assignments`
+  - `marketing_banners_queue`
+- Integrate real image upload to Supabase Storage
+- Implement automated consumption of published templates in home/marketplace
+- Add advanced FX layers (particles, signatures, animations)

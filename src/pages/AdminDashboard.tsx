@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -48,6 +49,7 @@ import AirdropConfigTab from "@/components/admin/sections/AirdropConfigTab";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const navigate = useNavigate();
 
   const dashboardSections = [
     { id: "home", label: "Home", icon: Home, description: "Configure homepage" },
@@ -71,6 +73,10 @@ const AdminDashboard = () => {
     { id: "elements", label: "Elements", icon: Box, description: "UI elements" },
     { id: "models", label: "3D Models", icon: Box, description: "3D assets" },
     { id: "material", label: "Materials", icon: Sparkles, description: "3D materials" },
+  ];
+
+  const creativeTools = [
+    { id: "studio", label: "Creative Studio", icon: Sparkles, description: "NFT Card Studio", route: "/admin/studio" },
   ];
 
   return (
@@ -197,6 +203,27 @@ const AdminDashboard = () => {
                                 <section.icon className="mb-3 text-blue-400" size={24} />
                                 <h3 className="text-lg font-medium mb-1 text-white">{section.label}</h3>
                                 <p className="text-sm text-gray-400">{section.description}</p>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Separator className="my-6" />
+
+                      <div>
+                        <h3 className="text-xl font-semibold text-white mb-4">Creative Tools</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {creativeTools.map((tool) => (
+                            <Card
+                              key={tool.id}
+                              className="glass-morphism bg-pink-900/20 hover:bg-pink-900/30 transition-all cursor-pointer"
+                              onClick={() => navigate(tool.route)}
+                            >
+                              <CardContent className="p-4">
+                                <tool.icon className="mb-3 text-pink-400" size={24} />
+                                <h3 className="text-lg font-medium mb-1 text-white">{tool.label}</h3>
+                                <p className="text-sm text-gray-400">{tool.description}</p>
                               </CardContent>
                             </Card>
                           ))}

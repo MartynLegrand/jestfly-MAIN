@@ -17,6 +17,7 @@ import PressKitPage from './pages/PressKitPage';
 import AirdropPage from './pages/AirdropPage';
 import EcommercePage from './pages/EcommercePage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminNFTStudio from './pages/AdminNFTStudio';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import { AuthProvider } from './contexts/auth';
@@ -110,6 +111,11 @@ function App() {
                 <Route path="/admin" element={
                   <ProtectedRoute requiredRoles={['admin']}>
                     <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/studio" element={
+                  <ProtectedRoute requiredRoles={['admin']}>
+                    <AdminNFTStudio />
                   </ProtectedRoute>
                 } />
                 <Route path="/unauthorized" element={<UnauthorizedPage />} />
