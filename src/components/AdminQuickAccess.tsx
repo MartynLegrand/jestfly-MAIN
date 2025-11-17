@@ -64,6 +64,24 @@ const AdminQuickAccess = () => {
         navigate('/nft-store');
         toast.success('Navigated to NFT Store');
       }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'S') {
+        e.preventDefault();
+        navigate('/store');
+        toast.success('Navigated to Store');
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        navigate('/community');
+        toast.success('Navigated to Community');
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'B') {
+        e.preventDefault();
+        navigate('/bookings');
+        toast.success('Navigated to Bookings');
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -204,6 +222,24 @@ const AdminQuickAccess = () => {
                   <span>Homepage</span>
                   <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
                     {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+H
+                  </kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Store</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+S
+                  </kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Community</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+C
+                  </kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Bookings</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+B
                   </kbd>
                 </div>
               </div>
