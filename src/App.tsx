@@ -16,7 +16,7 @@ import LiveStreamPage from './pages/LiveStreamPage';
 import PressKitPage from './pages/PressKitPage';
 import AirdropPage from './pages/AirdropPage';
 import EcommercePage from './pages/EcommercePage';
-import AdminPanel from './pages/AdminPanel';
+import AdminDashboard from './pages/AdminDashboard';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import { AuthProvider } from './contexts/auth';
@@ -109,7 +109,7 @@ function App() {
                 <Route path="/airdrop" element={<AirdropPage />} />
                 <Route path="/admin" element={
                   <ProtectedRoute requiredRoles={['admin']}>
-                    <AdminPanel />
+                    <AdminDashboard />
                   </ProtectedRoute>
                 } />
                 <Route path="/unauthorized" element={<UnauthorizedPage />} />
