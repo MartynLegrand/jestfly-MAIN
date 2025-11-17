@@ -10,9 +10,22 @@ import { supabase } from "@/integrations/supabase/client";
 
 const BookingsConfigTab = () => {
   const [config, setConfig] = useState({
-    title: "Bookings",
+    title: "Book JESTFLY",
+    subtitle: "Ready to bring the future of sound to your event? Book JESTFLY for your next party, festival, or private event and experience a sonic journey like no other.",
     description: "Booking system configuration",
     enabled: true,
+    showDJBooking: true,
+    showStudioBooking: true,
+    showConsultation: true,
+    djBookingTitle: "DJ Booking",
+    djBookingDescription: "Book JESTFLY for your event",
+    studioBookingTitle: "Studio Sessions",
+    studioBookingDescription: "Book studio time",
+    consultationTitle: "Consultation",
+    consultationDescription: "Schedule a consultation",
+    emailNotifications: true,
+    requirePhone: true,
+    allowMultipleDates: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -30,7 +43,7 @@ const BookingsConfigTab = () => {
         .single();
 
       if (data) {
-        setConfig(JSON.parse(data.config));
+        setConfig({ ...config, ...JSON.parse(data.config) });
       }
     } catch (error) {
       console.log("Using default config");
@@ -63,12 +76,12 @@ const BookingsConfigTab = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-white mb-2">Bookings Configuration</h2>
-        <p className="text-white/60">Booking system configuration</p>
+        <p className="text-white/60">Configure booking types, content, and settings</p>
       </div>
 
       <Card className="glass-morphism">
         <CardHeader>
-          <CardTitle>General Settings</CardTitle>
+          <CardTitle>Page Content</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -81,20 +94,148 @@ const BookingsConfigTab = () => {
           </div>
 
           <div>
-            <Label>Description</Label>
+            <Label>Subtitle / Hero Text</Label>
             <Textarea
-              value={config.description}
-              onChange={(e) => setConfig({ ...config, description: e.target.value })}
+              value={config.subtitle}
+              onChange={(e) => setConfig({ ...config, subtitle: e.target.value })}
               className="bg-black/20 border-white/10"
               rows={3}
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <Label>Enable Bookings Section</Label>
+            <Label>Enable Bookings Page</Label>
             <Switch
               checked={config.enabled}
               onCheckedChange={(checked) => setConfig({ ...config, enabled: checked })}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-morphism">
+        <CardHeader>
+          <CardTitle>Booking Types</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>DJ Booking</Label>
+              <Switch
+                checked={config.showDJBooking}
+                onCheckedChange={(checked) => setConfig({ ...config, showDJBooking: checked })}
+              />
+            </div>
+            {config.showDJBooking && (
+              <div className="ml-6 space-y-2">
+                <Input
+                  placeholder="Title"
+                  value={config.djBookingTitle}
+                  onChange={(e) => setConfig({ ...config, djBookingTitle: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                />
+                <Textarea
+                  placeholder="Description"
+                  value={config.djBookingDescription}
+                  onChange={(e) => setConfig({ ...config, djBookingDescription: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                  rows={2}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>Studio Sessions</Label>
+              <Switch
+                checked={config.showStudioBooking}
+                onCheckedChange={(checked) => setConfig({ ...config, showStudioBooking: checked })}
+              />
+            </div>
+            {config.showStudioBooking && (
+              <div className="ml-6 space-y-2">
+                <Input
+                  placeholder="Title"
+                  value={config.studioBookingTitle}
+                  onChange={(e) => setConfig({ ...config, studioBookingTitle: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                />
+                <Textarea
+                  placeholder="Description"
+                  value={config.studioBookingDescription}
+                  onChange={(e) => setConfig({ ...config, studioBookingDescription: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                  rows={2}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>Consultation</Label>
+              <Switch
+                checked={config.showConsultation}
+                onCheckedChange={(checked) => setConfig({ ...config, showConsultation: checked })}
+              />
+            </div>
+            {config.showConsultation && (
+              <div className="ml-6 space-y-2">
+                <Input
+                  placeholder="Title"
+                  value={config.consultationTitle}
+                  onChange={(e) => setConfig({ ...config, consultationTitle: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                />
+                <Textarea
+                  placeholder="Description"
+                  value={config.consultationDescription}
+                  onChange={(e) => setConfig({ ...config, consultationDescription: e.target.value })}
+                  className="bg-black/20 border-white/10"
+                  rows={2}
+                />
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-morphism">
+        <CardHeader>
+          <CardTitle>Form Settings</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Email Notifications</Label>
+              <p className="text-sm text-white/50">Send confirmation emails</p>
+            </div>
+            <Switch
+              checked={config.emailNotifications}
+              onCheckedChange={(checked) => setConfig({ ...config, emailNotifications: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Require Phone Number</Label>
+              <p className="text-sm text-white/50">Make phone field required</p>
+            </div>
+            <Switch
+              checked={config.requirePhone}
+              onCheckedChange={(checked) => setConfig({ ...config, requirePhone: checked })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Allow Multiple Dates</Label>
+              <p className="text-sm text-white/50">Enable multi-date selection</p>
+            </div>
+            <Switch
+              checked={config.allowMultipleDates}
+              onCheckedChange={(checked) => setConfig({ ...config, allowMultipleDates: checked })}
             />
           </div>
         </CardContent>
