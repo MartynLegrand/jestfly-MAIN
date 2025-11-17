@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Settings,
   Sparkles,
@@ -11,6 +11,7 @@ import {
   Users,
   ShoppingCart,
   TrendingUp,
+  Command,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import {
@@ -22,14 +23,52 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { useAuth } from '@/contexts/auth';
+import { toast } from 'sonner';
 
 const AdminQuickAccess = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = user?.role === 'admin';
   const isOnAdminPage = location.pathname.startsWith('/admin');
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsOpen(prev => !prev);
+        toast.success('Admin Quick Access toggled', {
+          description: 'Use Ctrl+K (or Cmd+K) anytime',
+          duration: 2000,
+        });
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        navigate('/admin');
+        toast.success('Navigated to Admin Panel');
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'H') {
+        e.preventDefault();
+        navigate('/');
+        toast.success('Navigated to Homepage');
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'N') {
+        e.preventDefault();
+        navigate('/nft-store');
+        toast.success('Navigated to NFT Store');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdmin, navigate]);
 
   if (!isAdmin) return null;
 
@@ -144,9 +183,29 @@ const AdminQuickAccess = () => {
 
             <DropdownMenuSeparator className="bg-white/10" />
 
-            <div className="p-2">
-              <div className="text-xs text-white/40 text-center">
+            <div className="p-3 space-y-2">
+              <div className="text-xs text-white/40 text-center mb-2">
                 {isOnAdminPage ? '📊 Admin Mode Active' : '✨ Click to open admin panel'}
+              </div>
+              <div className="text-[10px] text-white/30 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span>Toggle Menu</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+K
+                  </kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Admin Panel</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+A
+                  </kbd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Homepage</span>
+                  <kbd className="px-1.5 py-0.5 bg-white/10 rounded text-white/50 font-mono">
+                    {navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Shift+H
+                  </kbd>
+                </div>
               </div>
             </div>
           </DropdownMenuContent>

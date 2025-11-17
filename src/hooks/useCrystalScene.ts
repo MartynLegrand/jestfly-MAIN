@@ -2,6 +2,23 @@ import { useEffect } from 'react';
 import * as THREE from 'three';
 import { ModelParameters, defaultModelParams } from '../types/model';
 
+const isMobile = () => {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+};
+
+const getDeviceCapabilities = () => {
+  const mobile = isMobile();
+  const pixelRatio = window.devicePixelRatio || 1;
+
+  return {
+    isMobile: mobile,
+    isLowEnd: mobile && pixelRatio < 2,
+    pixelRatio: mobile ? Math.min(pixelRatio, 1.5) : Math.min(pixelRatio, 2),
+    subdivisions: mobile ? (pixelRatio < 2 ? 0 : 1) : 2,
+    enableAntialiasing: !mobile || pixelRatio >= 2,
+  };
+};
+
 export const useCrystalScene = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
   parameters: ModelParameters = defaultModelParams
@@ -11,6 +28,7 @@ export const useCrystalScene = (
 
     const canvas = canvasRef.current;
     const scene = new THREE.Scene();
+    const capabilities = getDeviceCapabilities();
 
     const camera = new THREE.PerspectiveCamera(
       50,
@@ -22,13 +40,16 @@ export const useCrystalScene = (
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
-      alpha: true
+      antialias: capabilities.enableAntialiasing,
+      alpha: true,
+      powerPreference: capabilities.isMobile ? 'low-power' : 'high-performance',
     });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(capabilities.pixelRatio);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = parameters.lightIntensity || 1.5;
+
+    console.log('[3D Scene] Device capabilities:', capabilities);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
@@ -41,7 +62,8 @@ export const useCrystalScene = (
     greenLight.position.set(2, -1.5, 2);
     scene.add(greenLight);
 
-    const geometry = new THREE.IcosahedronGeometry(1, 1);
+    const geometry = new THREE.IcosahedronGeometry(1, capabilities.subdivisions);
+    console.log(`[3D Scene] Using LOD level: ${capabilities.subdivisions} (triangles: ${geometry.attributes.position.count / 3})`);
     const material = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(parameters.color || defaultModelParams.color),
       metalness: parameters.metalness ?? defaultModelParams.metalness,
@@ -72,9 +94,22 @@ export const useCrystalScene = (
     window.addEventListener('resize', handleResize);
 
     let time = 0;
+    let frameCount = 0;
+    let lastFpsUpdate = performance.now();
+    let fps = 60;
+
     const animate = () => {
       const animationId = requestAnimationFrame(animate);
       time += 0.01;
+      frameCount++;
+
+      const now = performance.now();
+      if (now - lastFpsUpdate > 1000) {
+        fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+        console.log(`[3D Scene Performance] FPS: ${fps}`);
+        frameCount = 0;
+        lastFpsUpdate = now;
+      }
 
       crystalMesh.rotation.y += 0.003;
       crystalMesh.rotation.x = Math.sin(time * 0.1) * 0.05;
@@ -83,10 +118,12 @@ export const useCrystalScene = (
       const scale = 1 + Math.sin(time) * 0.01;
       crystalMesh.scale.set(scale, scale, scale);
 
-      purpleLight.position.x = Math.sin(time * 0.7) * 3;
-      purpleLight.position.y = Math.cos(time * 0.5) * 3;
-      greenLight.position.x = Math.sin(time * 0.3 + 2) * 3;
-      greenLight.position.y = Math.cos(time * 0.4 + 1) * 3;
+      if (!capabilities.isLowEnd) {
+        purpleLight.position.x = Math.sin(time * 0.7) * 3;
+        purpleLight.position.y = Math.cos(time * 0.5) * 3;
+        greenLight.position.x = Math.sin(time * 0.3 + 2) * 3;
+        greenLight.position.y = Math.cos(time * 0.4 + 1) * 3;
+      }
 
       renderer.render(scene, camera);
 
