@@ -312,7 +312,7 @@ const WalletPage = () => {
                         </div>
                         <Button
                           onClick={() =>
-                            completeMission(mission.id, mission.reward_amount)
+                            completeMission(mission.id)
                           }
                           disabled={isCompleted}
                           size="sm"
