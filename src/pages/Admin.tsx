@@ -14,7 +14,8 @@ import {
   Image,
   Layers,
   Monitor,
-  Eye
+  Eye,
+  Sparkles
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ModelParameters, defaultModelParams } from "@/types/model";
@@ -27,6 +28,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ElementsTab from "@/components/admin/ElementsTab";
 import LayoutTab from "@/components/admin/LayoutTab";
 import SketchfabTab from "@/components/admin/SketchfabTab";
+import NFTGeneratorTab from "@/components/admin/NFTGeneratorTab";
 
 const Admin = () => {
   const { toast } = useToast();
@@ -280,11 +282,18 @@ const Admin = () => {
                       <Palette size={14} /> 
                       <span className="hidden md:inline">Cores</span>
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="settings" 
+                    <TabsTrigger
+                      value="nft-generator"
                       className="flex items-center justify-center md:justify-start gap-2 px-2 py-1.5 md:py-2 text-xs sm:text-sm bg-black/30 text-white/70 data-[state=active]:bg-purple-600/80 data-[state=active]:text-white hover:bg-white/10 transition-all"
                     >
-                      <Settings size={14} /> 
+                      <Sparkles size={14} />
+                      <span className="hidden md:inline">NFT Generator</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="settings"
+                      className="flex items-center justify-center md:justify-start gap-2 px-2 py-1.5 md:py-2 text-xs sm:text-sm bg-black/30 text-white/70 data-[state=active]:bg-purple-600/80 data-[state=active]:text-white hover:bg-white/10 transition-all"
+                    >
+                      <Settings size={14} />
                       <span className="hidden md:inline">Config</span>
                     </TabsTrigger>
                   </TabsList>
@@ -292,7 +301,7 @@ const Admin = () => {
               </CardContent>
             </Card>
           </div>
-          
+
           {/* Conteúdo principal */}
           <div className="flex-1">
             <Card className="neo-blur border-white/10">
@@ -448,6 +457,11 @@ const Admin = () => {
                     />
                   </TabsContent>
                   
+                  {/* Tab de NFT Generator */}
+                  <TabsContent value="nft-generator" className="mt-0">
+                    <NFTGeneratorTab />
+                  </TabsContent>
+
                   {/* Tab de Configurações */}
                   <TabsContent value="settings" className="mt-0">
                     <SettingsTab />
