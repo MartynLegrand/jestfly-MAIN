@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Footer from '../components/Footer';
 import CommunityNav from '../components/community/CommunityNav';
 import CommunityHome from '../components/community/CommunityHome';
 import EventsPage from '../components/community/EventsPage';
@@ -23,7 +22,6 @@ const CommunityPage: React.FC = () => {
         </Routes>
       </div>
       
-      <Footer />
     </div>
   );
 };

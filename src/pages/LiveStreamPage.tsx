@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Video, User, Users, Instagram } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import Footer from '../components/Footer';
 
 const LiveStreamPage: React.FC = () => {
   const [isLive, setIsLive] = useState(true);
@@ -231,7 +230,6 @@ const LiveStreamPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

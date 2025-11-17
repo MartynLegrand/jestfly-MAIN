@@ -7,7 +7,6 @@ import NFTSection from '../components/NFTSection';
 import EventsSection from '../components/EventsSection';
 import ShopPreview from '../components/ShopPreview';
 import ConnectionSection from '../components/ConnectionSection';
-import Footer from '../components/Footer';
 import { ModelParameters } from '../types/model';
 import ArtistShowcase from '../components/ArtistShowcase';
 
@@ -87,7 +86,6 @@ const HomePage: React.FC<HomePageProps> = ({
       <ConnectionSection />
       
       {/* Footer */}
-      <Footer />
     </>
   );
 };

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import Footer from '../components/Footer';
 
 // Store sub-pages
 const NFTsPage = () => (
@@ -193,7 +192,6 @@ const StorePage: React.FC = () => {
         </Routes>
       </div>
       
-      <Footer />
     </div>
   );
 };

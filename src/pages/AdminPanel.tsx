@@ -8,25 +8,14 @@ import TextureEditor from '../components/admin/TextureEditor';
 import ModelGallery from '../components/admin/ModelGallery';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Separator } from '../components/ui/separator';
-import GlassHeader from '../components/GlassHeader';
 import JestCoinManager from '../components/admin/jest-coin/JestCoinManager';
 import RaffleManager from '../components/admin/RaffleManager';
 
 const AdminPanel = () => {
-  const menuItems = [
-    { label: "Dashboard", href: "/admin" },
-    { label: "Models", href: "/admin/models" },
-    { label: "Assets", href: "/admin/assets" },
-    { label: "JestCoins", href: "/admin/jestcoins" },
-    { label: "Raffles", href: "/admin/raffles" },
-    { label: "Settings", href: "/admin/settings" }
-  ];
-
   return (
     <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full bg-gradient-to-br from-gray-900 to-black">
-        <GlassHeader menuItems={menuItems} />
-        <div className="flex flex-1 pt-16">
+        <div className="flex flex-1 pt-20">
           <AdminSidebar />
           <main className="flex-1 p-4 overflow-auto">
             <div className="max-w-7xl mx-auto">

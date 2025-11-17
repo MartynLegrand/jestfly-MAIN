@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Music, ShoppingCart, Gift, Star, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
 import { Card, CardContent } from '../components/ui/card';
 
 // Product category interface
@@ -302,7 +301,6 @@ const NewStorePage: React.FC = () => {
         </div>
       </section>
       
-      <Footer />
     </div>
   );
 };

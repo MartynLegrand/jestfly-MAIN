@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
 import { Download, FileText, Camera, Mail, MessageSquare } from 'lucide-react';
 
 const PressKitPage: React.FC = () => {
@@ -133,7 +132,6 @@ const PressKitPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

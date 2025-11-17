@@ -48,7 +48,7 @@ const LogoMedia: React.FC<LogoMediaProps> = ({
         alpha: true
       });
 
-      const size = window.innerWidth < 640 ? 50 : 70;
+      const size = window.innerWidth < 640 ? 40 : window.innerWidth < 768 ? 50 : 60;
       renderer.setSize(size, size);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -126,7 +126,7 @@ const LogoMedia: React.FC<LogoMediaProps> = ({
       animate();
 
       const handleResize = () => {
-        const newSize = window.innerWidth < 640 ? 50 : 70;
+        const newSize = window.innerWidth < 640 ? 40 : window.innerWidth < 768 ? 50 : 60;
         renderer.setSize(newSize, newSize);
       };
 
@@ -150,7 +150,7 @@ const LogoMedia: React.FC<LogoMediaProps> = ({
 
     if (type === 'video') {
       return (
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden">
+        <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full overflow-hidden">
           <video
             ref={videoRef}
             src={videoSrc}

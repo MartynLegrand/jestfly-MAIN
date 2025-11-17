@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import Footer from '../components/Footer';
 import { toast } from "sonner";
 import BookingTypeSelector from '../components/bookings/BookingTypeSelector';
 import CalendarSection from '../components/bookings/CalendarSection';
@@ -84,8 +83,6 @@ const BookingsPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };

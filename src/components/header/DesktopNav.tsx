@@ -29,15 +29,15 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ menuItems }) => {
   );
   
   return (
-    <nav className="hidden lg:flex items-center overflow-x-auto scrollbar-none">
+    <nav className="hidden lg:flex items-center overflow-x-auto scrollbar-none max-w-[50vw] xl:max-w-none flex-1">
       {/* Seção Principal */}
-      <div className="flex items-center space-x-3 xl:space-x-6 whitespace-nowrap">
+      <div className="flex items-center space-x-2 xl:space-x-4 whitespace-nowrap">
         {mainMenuItems.map((item) => (
           <Link 
             key={item.href} 
             to={item.href}
-            className={`text-white/80 text-xs xl:text-sm hover:text-white transition-colors uppercase ${
-              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-medium' : ''
+            className={`text-white/80 text-[10px] xl:text-sm hover:text-white transition-colors uppercase tracking-wider ${
+              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-semibold' : ''
             }`}
           >
             {item.label}
@@ -53,8 +53,8 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ menuItems }) => {
           <Link 
             key={item.href} 
             to={item.href}
-            className={`text-white/80 text-xs xl:text-sm hover:text-white transition-colors uppercase ${
-              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-medium' : ''
+            className={`text-white/80 text-[10px] xl:text-sm hover:text-white transition-colors uppercase tracking-wider ${
+              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-semibold' : ''
             }`}
           >
             {item.label}
@@ -70,8 +70,8 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ menuItems }) => {
           <Link 
             key={item.href} 
             to={item.href}
-            className={`text-white/80 text-xs xl:text-sm hover:text-white transition-colors uppercase ${
-              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-medium' : ''
+            className={`text-white/80 text-[10px] xl:text-sm hover:text-white transition-colors uppercase tracking-wider ${
+              location.pathname.includes(item.href) && item.href !== '/' ? 'text-white font-semibold' : ''
             }`}
           >
             {item.label}

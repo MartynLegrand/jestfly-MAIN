@@ -25,7 +25,6 @@ import { useToast } from '@/hooks/use-toast';
 import { nftProductsService, cartService } from '@/services/nft';
 import { useAuth } from '@/contexts/auth';
 import type { NFTProduct, NFTProductFilters, ProductType, ProductRarity, PaymentMethod } from '@/types/nftTypes';
-import Footer from '@/components/Footer';
 
 const NFTStorePage = () => {
   const { toast } = useToast();
@@ -411,7 +410,6 @@ const NFTStorePage = () => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };

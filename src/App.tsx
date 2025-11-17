@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlassHeader from './components/GlassHeader';
+import AdminQuickAccess from './components/AdminQuickAccess';
 import { defaultModelParams } from './types/model';
 import { Toaster } from 'sonner';
 import NotesPage from './pages/NotesPage';
@@ -80,6 +81,7 @@ function App() {
               modelSrc="/models/logo-3d.glb"
             />
             <Toaster position="top-right" />
+            <AdminQuickAccess />
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage crystalParams={crystalParams} galleryImages={galleryImages} />} />

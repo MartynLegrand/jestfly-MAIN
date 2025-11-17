@@ -7,7 +7,6 @@ import { Label } from '../components/ui/label';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../components/ui/sheet';
 import { Badge } from '../components/ui/badge';
 import { motion } from 'framer-motion';
-import Footer from '../components/Footer';
 import { Headphones, Info, Mic, Star, Heart, Users, DollarSign, MusicIcon, Upload, Calendar } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 
@@ -677,7 +676,6 @@ const DemoSubmissionPage: React.FC = () => {
         </SheetContent>
       </Sheet>
       
-      <Footer />
     </div>
   );
 };

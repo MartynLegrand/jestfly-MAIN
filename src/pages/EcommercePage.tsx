@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Box, FileImage, Video, Shapes, BookOpen, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
 import { Card, CardContent } from '../components/ui/card';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -322,7 +321,6 @@ const EcommercePage: React.FC = () => {
         </div>
       </section>
       
-      <Footer />
     </div>
   );
 };

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Gift, Users, Calendar, Trophy, Clock, Ticket } from 'lucide-react';
 import GoldCoin3D from '../components/GoldCoin3D';
-import Footer from '../components/Footer';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Separator } from '../components/ui/separator';
@@ -297,7 +296,6 @@ const AirdropPage: React.FC = () => {
         </Tabs>
       </div>
       
-      <Footer />
     </div>
   );
 };
