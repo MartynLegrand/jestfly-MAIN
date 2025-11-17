@@ -8,14 +8,22 @@ const FrontCrystal: React.FC = () => {
     if (!crystalRef.current) return;
     
     const crystal = crystalRef.current;
+    let animationFrameId: number;
     
     // Configurar animação do cristal
     const animate = () => {
       crystal.style.transform = `rotate3d(1, 1, 1, ${Date.now() / 5000}rad) rotate(${Date.now() / 3000}rad)`;
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
     
     animate();
+    
+    // Cleanup function to cancel animation frame
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   return (

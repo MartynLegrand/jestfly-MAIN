@@ -317,8 +317,9 @@ const ModelTab = ({
     pmremGenerator.dispose();
 
     // Animation loop
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
     };
@@ -340,6 +341,9 @@ const ModelTab = ({
 
     // Cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener('resize', handleResize);
       
       if (previewRef.current && previewRef.current.contains(renderer.domElement)) {

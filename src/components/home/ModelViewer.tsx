@@ -334,8 +334,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     window.addEventListener('resize', handleResize);
     
     // Animation loop
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       
       if (model) {
         // Pulsar levemente o modelo
@@ -351,6 +352,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleTouch);
       window.removeEventListener('touchstart', handleTouch);

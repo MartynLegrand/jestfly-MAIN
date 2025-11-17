@@ -122,8 +122,10 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
     
     // Animation loop
     let time = 0;
+    let animationFrameId: number;
+    
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       
       time += 0.01;
       
@@ -144,6 +146,9 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
     
     // Handle cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       scene.clear();
       renderer.dispose();
     };
