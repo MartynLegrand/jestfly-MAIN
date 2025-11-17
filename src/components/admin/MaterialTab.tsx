@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,7 @@ const MaterialTab = ({
   };
   
   // Aplicar um preset de material
-  const applyPreset = (presetId: string) => {
+  const applyPreset = useCallback((presetId: string) => {
     const preset = materialPresets.find(p => p.id === presetId);
     if (!preset) return;
     
@@ -110,7 +110,7 @@ const MaterialTab = ({
     setToastMessage(`Preset de material "${preset.name}" aplicado com sucesso!`);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
-  };
+  }, [modelParams, updateModelParam]);
   
   // Lidar com upload de HDR
   const handleHDRUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -468,8 +468,9 @@ const MaterialTab = ({
     loadEnvironment(currentEnvironment);
     
     // Animation loop
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
     };
@@ -491,6 +492,9 @@ const MaterialTab = ({
 
     // Cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener('resize', handleResize);
       
       if (previewRef.current && previewRef.current.contains(renderer.domElement)) {

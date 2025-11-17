@@ -10,7 +10,7 @@ interface ModelViewerProps {
   modelParams: ModelParameters;
 }
 
-const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) => {
+const ModelViewer: React.FC<ModelViewerProps> = React.memo(({ currentModel, modelParams }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [modelLoaded, setModelLoaded] = useState(false);
   const [loadingModel, setLoadingModel] = useState(true);
@@ -23,10 +23,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     setLoadingError(null);
     setModelLoaded(false);
     setLoadingModel(true);
-    
-    console.log("Inicializando cena 3D");
-    console.log("Modelo atual:", currentModel);
-    console.log("Parâmetros:", modelParams);
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -83,8 +79,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Função para criar o diamante
     const createDiamondGeometry = () => {
-      console.log("Criando modelo de diamante");
-      
       try {
         // Diamond geometry mais detalhada
         const vertices = [
@@ -121,7 +115,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
         scene.add(model);
         setModelLoaded(true);
         setLoadingModel(false);
-        console.log("Diamante criado com sucesso");
       } catch (error) {
         console.error("Erro ao criar diamante:", error);
         setLoadingError("Erro ao criar o modelo de diamante");
@@ -131,8 +124,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Função para criar efeito de cristal distorcido
     const createCrystalGeometry = () => {
-      console.log("Criando modelo de cristal distorcido");
-      
       try {
         // Criar geometria base
         const geometry = new THREE.IcosahedronGeometry(2, 3);
@@ -166,7 +157,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
         scene.add(model);
         setModelLoaded(true);
         setLoadingModel(false);
-        console.log("Cristal distorcido criado com sucesso");
       } catch (error) {
         console.error("Erro ao criar cristal:", error);
         setLoadingError("Erro ao criar o modelo de cristal");
@@ -176,8 +166,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Função para criar esfera
     const createSphereModel = () => {
-      console.log("Criando modelo de esfera");
-      
       try {
         const geometry = new THREE.SphereGeometry(2.5, 64, 64); // Maior e mais detalhada
         const sphere = new THREE.Mesh(geometry, material);
@@ -188,7 +176,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
         scene.add(model);
         setModelLoaded(true);
         setLoadingModel(false);
-        console.log("Esfera criada com sucesso");
       } catch (error) {
         console.error("Erro ao criar esfera:", error);
         setLoadingError("Erro ao criar o modelo de esfera");
@@ -198,8 +185,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Função para criar torus
     const createTorusModel = () => {
-      console.log("Criando modelo de torus");
-      
       try {
         const geometry = new THREE.TorusGeometry(2, 0.7, 32, 128); // Maior e mais detalhado
         const torus = new THREE.Mesh(geometry, material);
@@ -210,7 +195,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
         scene.add(model);
         setModelLoaded(true);
         setLoadingModel(false);
-        console.log("Torus criado com sucesso");
       } catch (error) {
         console.error("Erro ao criar torus:", error);
         setLoadingError("Erro ao criar o modelo de anel");
@@ -220,8 +204,6 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Função para criar um ambiente básico quando o HDR falhar
     const createBasicEnvironment = () => {
-      console.log("Criando ambiente básico");
-      
       // Criar um ambiente simples como fallback
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       pmremGenerator.compileEquirectangularShader();
@@ -241,12 +223,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
       // Aplicar à cena
       scene.environment = envMap;
       pmremGenerator.dispose();
-      
-      console.log("Ambiente básico criado com sucesso");
     };
 
     // Selecionar o modelo correto com base na preferência
-    console.log("Selecionando modelo:", currentModel);
     if (currentModel === 'diamond') {
       createDiamondGeometry();
     } else if (currentModel === 'sphere') {
@@ -334,8 +313,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     window.addEventListener('resize', handleResize);
     
     // Animation loop
+    let animationFrameId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       
       if (model) {
         // Pulsar levemente o modelo
@@ -351,6 +331,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
     
     // Cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleTouch);
       window.removeEventListener('touchstart', handleTouch);
@@ -387,6 +370,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ currentModel, modelParams }) 
       )}
     </div>
   );
-};
+});
+
+ModelViewer.displayName = 'ModelViewer';
 
 export default ModelViewer;

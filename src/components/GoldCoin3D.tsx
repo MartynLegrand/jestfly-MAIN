@@ -7,7 +7,7 @@ interface GoldCoin3DProps {
   className?: string;
 }
 
-const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) => {
+const GoldCoin3D: React.FC<GoldCoin3DProps> = React.memo(({ size = 100, className = "" }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -122,8 +122,10 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
     
     // Animation loop
     let time = 0;
+    let animationFrameId: number;
+    
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       
       time += 0.01;
       
@@ -144,6 +146,9 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
     
     // Handle cleanup
     return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       scene.clear();
       renderer.dispose();
     };
@@ -156,6 +161,8 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ size = 100, className = "" }) =
       style={{ width: size, height: size }}
     />
   );
-};
+});
+
+GoldCoin3D.displayName = 'GoldCoin3D';
 
 export default GoldCoin3D;
