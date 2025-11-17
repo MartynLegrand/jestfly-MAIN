@@ -17,7 +17,7 @@ import {
   MonitorPlay,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useNFTCardStudio } from '@/hooks/use-nft-card-studio';
+import { useNFTCardStudio, type PreviewContext } from '@/hooks/use-nft-card-studio';
 import { NFTCard3D } from './NFTCard3D';
 import {
   saveNFTCardTemplate,
@@ -212,7 +212,7 @@ export function NFTCardStudio() {
             <Tabs
               value={state.previewContext}
               onValueChange={(value) =>
-                updateField('previewContext', value as any)
+                updateField('previewContext', value as PreviewContext)
               }
             >
               <TabsList className="grid w-full grid-cols-4 mb-6">
