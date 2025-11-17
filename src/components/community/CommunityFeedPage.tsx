@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Plus, TrendingUp, Users, Hash } from 'lucide-react';
 import PostFeed from './PostFeed';
-import CreatePostModalNew from './CreatePostModalNew';
-import CommentsListNew from './CommentsListNew';
+import CreatePostModal from './CreatePostModal';
+import CommentsList from './CommentsList';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -83,7 +83,7 @@ export default function CommunityFeedPage() {
         </div>
       </div>
 
-      <CreatePostModalNew
+      <CreatePostModal
         open={showCreatePost}
         onClose={() => setShowCreatePost(false)}
         onPostCreated={() => {
@@ -92,7 +92,7 @@ export default function CommunityFeedPage() {
       />
 
       {selectedPostForComments && (
-        <CommentsListNew
+        <CommentsList
           postId={selectedPostForComments}
           open={!!selectedPostForComments}
           onClose={() => setSelectedPostForComments(null)}

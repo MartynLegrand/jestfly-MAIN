@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Plus, TrendingUp, Users } from 'lucide-react';
 import PostFeed from './PostFeed';
-import CreatePostModalNew from './CreatePostModalNew';
-import CommentsListNew from './CommentsListNew';
+import CreatePostModal from './CreatePostModal';
+import CommentsList from './CommentsList';
 import { Button } from '../ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useAuth } from '../../contexts/auth';
@@ -73,7 +73,7 @@ const JestFlyersHubPage = () => {
         </Tabs>
       </div>
 
-      <CreatePostModalNew
+      <CreatePostModal
         open={showCreatePost}
         onClose={() => setShowCreatePost(false)}
         onPostCreated={() => {
@@ -82,7 +82,7 @@ const JestFlyersHubPage = () => {
       />
 
       {selectedPostForComments && (
-        <CommentsListNew
+        <CommentsList
           postId={selectedPostForComments}
           open={!!selectedPostForComments}
           onClose={() => setSelectedPostForComments(null)}

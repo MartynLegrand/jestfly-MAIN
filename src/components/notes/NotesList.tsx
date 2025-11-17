@@ -1,10 +1,9 @@
 
 import React from 'react';
 import { Note } from '../../models/Note';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { PinIcon, SearchIcon } from 'lucide-react';
 import { Input } from '../ui/input';
+import { formatDate as formatDateUtil } from '@/utils/dateUtils';
 
 interface NotesListProps {
   notes: Note[];
@@ -45,12 +44,9 @@ export const NotesList: React.FC<NotesListProps> = ({
   
   const formatDate = (date: Date) => {
     try {
-      // Se a data for um objeto Date, formatar
-      if (date instanceof Date) {
-        return formatDistanceToNow(date, { addSuffix: true, locale: ptBR });
-      }
-      // Se a data for uma string ou timestamp, converter para Date e formatar
-      return formatDistanceToNow(new Date(date), { addSuffix: true, locale: ptBR });
+      // Convert Date to ISO string if needed
+      const dateString = date instanceof Date ? date.toISOString() : String(date);
+      return formatDateUtil(dateString, 'pt-BR');
     } catch (error) {
       console.error('Erro ao formatar data:', error);
       return 'Data inválida';
