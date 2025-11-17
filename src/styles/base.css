@@ -32,9 +32,35 @@
   body {
     @apply bg-black text-foreground antialiased overflow-x-hidden;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    line-height: 1.6;
   }
 
   html {
     @apply scroll-smooth;
+  }
+
+  /* Improved typography */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  /* Better text contrast */
+  .text-secondary {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .text-muted {
+    color: rgba(255, 255, 255, 0.60);
   }
 }
