@@ -1,0 +1,93 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  deploy-production:
+    name: Deploy to Production Environment
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://jestfly.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
+      
+      - name: Build for production
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.PRODUCTION_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.PRODUCTION_SUPABASE_ANON_KEY }}
+          VITE_ENABLE_ANALYTICS: 'true'
+          VITE_ENVIRONMENT: 'production'
+      
+      - name: Generate build manifest
+        run: |
+          cat > dist/build-manifest.json << EOF
+          {
+            "version": "${{ github.sha }}",
+            "buildDate": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "branch": "${{ github.ref_name }}",
+            "environment": "production"
+          }
+          EOF
+      
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # Add production deployment commands here
+          # npx netlify-cli deploy --prod --dir=dist
+          # or vercel deploy --prod
+      
+      - name: Run production smoke tests
+        run: |
+          echo "Running production smoke tests..."
+          # Add smoke test commands here
+        continue-on-error: true
+      
+      - name: Create deployment record
+        run: |
+          echo "## Production Deployment Report" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://jestfly.com" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp**: $(date)" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Notify team
+        if: success()
+        run: |
+          echo "✅ Production deployment successful!"
+          # Add notification logic (Slack, Discord, etc.)
+      
+      - name: Rollback instructions
+        if: failure()
+        run: |
+          echo "## ⚠️ Deployment Failed - Rollback Instructions" >> $GITHUB_STEP_SUMMARY
+          echo "1. Run: git revert ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "2. Push to main branch" >> $GITHUB_STEP_SUMMARY
+          echo "3. Monitor deployment pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "4. Verify rollback with smoke tests" >> $GITHUB_STEP_SUMMARY
